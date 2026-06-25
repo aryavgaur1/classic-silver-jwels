@@ -1,0 +1,768 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us - Classic Silver Place</title>
+<style>
+:root{--ink:#181716;--muted:#6f6a61;--line:#e8e1d7;--paper:#fffdf9;--soft:#f6f1e9;--gold:#a77a35;--gold2:#d8bf8c;--deep:#2f3b35;--rose:#8f4b45;--blue:#3e6575;--ok:#287a52;--bad:#a33d36;--shadow:0 18px 45px rgba(33,27,20,.10)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--paper);color:var(--ink);letter-spacing:0}button,input,select,textarea{font:inherit}button{cursor:pointer}.serif{font-family:Georgia,'Times New Roman',serif}.topbar{position:sticky;top:0;z-index:30;background:rgba(255,253,249,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:22px;max-width:1280px;margin:auto;padding:0 24px}.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);min-width:220px}.brand img{width:48px;height:48px;object-fit:contain}.brand strong{font-family:Georgia,serif;font-weight:500;font-size:19px;letter-spacing:.04em}.brand span{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:2px}.links{display:flex;align-items:center;gap:18px;flex-wrap:wrap;justify-content:flex-end}.links a{border:0;background:transparent;color:var(--muted);text-decoration:none;text-transform:uppercase;font-size:11px;font-weight:700;letter-spacing:.11em;padding:8px 0}.links a:hover{color:var(--gold)}.links a.active{color:var(--ink)}.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.20em;color:var(--gold);font-weight:800}.btn{border:1px solid var(--ink);background:var(--ink);color:white;padding:11px 17px;border-radius:6px;text-decoration:none;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.08em}.btn.ghost{background:transparent;color:var(--ink)}.content-band{background:var(--soft);border-block:1px solid var(--line)}.content-grid{max-width:1280px;margin:auto;padding:54px 24px;display:grid;grid-template-columns:1fr 1fr;gap:28px}.text-panel h2,.text-panel h3{font-family:Georgia,serif;font-weight:400;margin:0 0 12px}.text-panel h2{font-size:34px}.text-panel h3{font-size:24px}.text-panel p,.text-panel li{color:#4e4942;line-height:1.75;font-size:14px}.text-panel ul{padding-left:18px}.infra-grid{max-width:1280px;margin:auto;padding:54px 24px;display:grid;grid-template-columns:1fr 1fr;gap:28px}.page-hero{max-width:1280px;margin:auto;padding:54px 24px 32px}.page-hero h1{font-family:Georgia,serif;font-size:clamp(36px,5vw,60px);font-weight:400;margin:14px 0 16px}.page-hero p{color:#4f4a43;line-height:1.85;font-size:15px;max-width:640px}.infra-card{border:1px solid var(--line);background:white;border-radius:8px;padding:24px}.infra-card h3{font-family:Georgia,serif;font-weight:400;font-size:24px;margin:0 0 14px}.infra-card p{color:#4e4942;line-height:1.75;font-size:14px;margin:0 0 10px}.infra-card ul{padding-left:18px;margin:0}.infra-card li{color:#4e4942;line-height:1.75;font-size:14px}.divider{border:0;border-top:1px solid var(--line);margin:0}.footer{background:#171716;color:#f4eee2}.footer-inner{max-width:1280px;margin:auto;padding:36px 24px;display:grid;grid-template-columns:1.2fr .8fr;gap:24px}.footer p{color:#cfc7ba;line-height:1.7}@media(max-width:920px){.content-grid,.infra-grid,.footer-inner{grid-template-columns:1fr}.links{display:none}}@media(max-width:560px){.nav{padding:0 14px}.brand{min-width:0}.content-grid,.infra-grid,.page-hero,.footer-inner{padding-left:14px;padding-right:14px}}
+
+/* === Shared Nav Search === */
+.search-wrap{position:relative;display:inline-block}
+.nav-search{border:1px solid var(--line);background:white;border-radius:6px;padding:9px 14px 9px 36px;font-size:13px;width:210px;color:var(--ink)}
+.nav-search:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+.search-icon-lbl{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:13px;pointer-events:none;color:var(--muted)}
+.autocomplete-list{position:absolute;top:calc(100% + 4px);left:0;right:0;background:white;border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:200;max-height:320px;overflow-y:auto;display:none}
+.autocomplete-list.open{display:block}
+.ac-item{display:flex;align-items:center;gap:12px;padding:10px 14px;cursor:pointer;border-bottom:1px solid var(--line);text-decoration:none;color:var(--ink)}
+.ac-item:last-child{border-bottom:0}
+.ac-item:hover,.ac-item.active{background:var(--soft)}
+.ac-item img{width:36px;height:36px;object-fit:cover;border-radius:4px;border:1px solid var(--line);flex-shrink:0}
+.ac-item-name{font-size:13px;font-weight:700;color:var(--ink)}
+.ac-item-meta{font-size:11px;color:var(--muted)}
+.ac-item-cat{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--gold)}
+</style>
+</head>
+<body>
+<header class="topbar"><nav class="nav"><a class="brand" href="index.html"><img src="assets/classic-silver-place-logo.jpeg" alt="Classic Silver Place logo"><div><strong class="csp-brand-name">Classic Silver Place</strong><span class="csp-tagline">Manufacturer & Exporter</span></div></a><div class="links"><a href="catalog.html">Catalog</a><a href="about.html" class="active">About Us</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a></div><div class="search-wrap"><span class="search-icon-lbl">ðŸ”</span><input id="search" class="nav-search" placeholder="Search productsâ€¦" autocomplete="off"><div class="autocomplete-list" id="autocompleteList"></div></div></nav></header>
+
+<main>
+<!-- Page Hero -->
+<div class="page-hero">
+  <span class="eyebrow" id="csp-hero-eyebrow">Est. 1970 - Jaipur, India</span>
+  <h1>About Classic Silver Place</h1>
+  <p>A leading wholesale manufacturer and exporter of Sterling Silver Jewellery &amp; Silver Articles, trusted by buyers worldwide for over five decades.</p>
+</div>
+
+<hr class="divider">
+
+<!-- About Section -->
+<section class="content-band">
+  <div class="content-grid">
+    <article class="text-panel">
+      <span class="eyebrow">Our Story</span>
+      <h2>Classic Silver Palace</h2>
+      <p id="csp-intro">Established in 1970, Classic Silver Palace has carved a niche for itself in the market as a leading wholesale manufacturer and exporter of all type Silver Articles, Silver with stone Studded Jewellery, Gem Color Stone Jewellery, Silver Oxidized Jewellery, High Fashion Jewellery etc. We are located in Jaipur (Rajasthan), India.</p>
+      <p>Our success is based upon our early principles which are still held today â€” innovative design, exquisite craftsmanship, impeccable quality and real value for money. The traditional skills of jewellery making, handed down over decades, are still in use in our state of the art workshops. We endeavor to understand the tastes and preferences of our clients and accordingly come out with unique designs.</p>
+      <p>Our spectacular range of Indian Silver Articles &amp; Semi Precious Sterling Silver Jewellery is the result of a proper insight into the functional aspect of this industry. With its reputed impression among buyers both domestically and internationally, the company has managed to hold its buyers in a strong way. We are a member of the Export Promotion Council For Handicraft (EPCH).</p>
+      <p>The company offers an exhaustive range of jewellery and stones marked by the diversity of style, shape, size and much more. The products also promise superlative quality and competitive price.</p>
+    </article>
+    <article class="text-panel">
+      <span class="eyebrow">Our Products</span>
+      <h2>Jewellery &amp; Silver Articles</h2>
+      <p id="csp-our-products">Where elegance is an attitude and innovation is the buzzword, we at Classic Silver Jewellery are committed to excellence by providing a nonpareil collection of Sterling Silver Jewellery &amp; Silver Articles. Our collection includes:</p>
+      <ul>
+        <li>Gem Stone Jewelry</li>
+        <li>925 Silver With Studded Jewellery</li>
+        <li>Beaded Jewellery</li>
+        <li>Sterling Silver Jewellery</li>
+        <li>Silver Articles</li>
+      </ul>
+      <p style="margin-top:18px">For any query, please send us an email: <strong>info@indianclassicsilverjewellery.com</strong></p>
+      <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+        <a class="btn" href="catalog.html">View Catalog</a>
+        <a class="btn ghost" href="contact.html">Contact Us</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- Infrastructure Section -->
+<section id="infrastructure">
+  <div class="infra-grid">
+    <div class="infra-card">
+      <span class="eyebrow">Infrastructure</span>
+      <h3>Design, Manufacturing &amp; Quality</h3>
+      <p id="csp-infra">Owing to our well-established infrastructural setup, outfitted with latest machinery and advanced technology, we are actively engaged in offering a vast array of premium quality Silver Jewelries with certified gemstones. This unit has all the required facilities that enable us to design our offered range in accordance with the latest market trends and enlarge productivity.</p>
+      <p>We employ a state-of-the-art infrastructure facility equipped with the latest machines to design and manufacture our products. We have segregated our infrastructure facility into various divisions to streamline execution. These units are manufacturing, designing, sales &amp; marketing, administration and logistics â€” helping us function smoothly by coordinating all activities for maximum operational efficiency.</p>
+      <p><strong>What makes our infrastructure stand apart:</strong></p>
+      <ul>
+        <li>Well-equipped quality control</li>
+        <li>Professional administrative setup</li>
+        <li>Standardized processes</li>
+        <li>Latest machinery &amp; advanced technology</li>
+      </ul>
+    </div>
+    <div class="infra-card">
+      <span class="eyebrow">Why Us</span>
+      <h3>Built For Wholesale Trust</h3>
+      <p id="csp-why">We are a reckoned entity engaged in manufacturing, exporting and supplying a vast collection of intricately designed Certified Gemstones and Sterling Silver Jewellery. Our easy payment modes and wide distribution network have made us renowned in the market.</p>
+      <p><strong>Factors behind our success:</strong></p>
+      <ul>
+        <li>Unique and exclusive designs</li>
+        <li>Flawless quality and fine finish</li>
+        <li>Wide choice in terms of design and jewellery types</li>
+        <li>Capacious warehousing and suitable packaging</li>
+        <li>Fast order processing and timely delivery</li>
+        <li>Integrated designing and manufacturing facilities</li>
+        <li>Certified Gems &amp; Diamonds</li>
+      </ul>
+      <div style="margin-top:24px">
+        <a class="btn" href="contact.html">Get In Touch</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="footer"><div class="footer-inner"><div><h2 class="serif csp-brand-name">Classic Silver Place</h2><p id="csp-footer-desc">Classic Silver Palace<br>Manufacturer &amp; Exporter of Sterling Silver Jewellery &amp; Silver Articles<br>V-2, Opp. Aashiyana Guest House, Chameli Wala Market, M.I. Road,<br>Jaipur [302003], (Raj.) India<br>Tel: 0091-141-2360070 &nbsp;|&nbsp; Mobile: 0091-94140-72173</p></div><div><h3 class="serif">Quick Links</h3><p><a href="catalog.html" style="color:#cfc7ba">Catalog</a><br><a href="faq.html" style="color:#cfc7ba">FAQ &amp; Payment Options</a><br><a href="contact.html" style="color:#cfc7ba">Send Enquiry</a><br><a href="contact.html" style="color:#cfc7ba">Contact &amp; Payment</a></p></div></div></footer>
+
+<script>
+(function(){
+const DEFAULT_PRODUCTS = [
+  {
+    "id": "CSAR607",
+    "code": "CSAR607",
+    "name": "Adjustable Open Ring",
+    "category": "Rings",
+    "metal": "Sterling Silver",
+    "stone": "Round CZ",
+    "style": "Adjustable",
+    "occasion": "Gift, Casual",
+    "desc": "An open-band design with a sparkling stone centrepiece. The adjustable band ensures a comfortable fit for most finger sizes, making it a versatile gifting option.",
+    "image": "assets/Products/Rings/CSAR607.JPG"
+  },
+  {
+    "id": "CSR107",
+    "code": "CSR107",
+    "name": "Classic Solitaire Ring",
+    "category": "Rings",
+    "metal": "Sterling Silver",
+    "stone": "Cubic Zirconia",
+    "style": "Solitaire",
+    "occasion": "Casual, Formal",
+    "desc": "A timeless solitaire design featuring a brilliant round-cut cubic zirconia set in sterling silver. Perfect for everyday elegance or as a statement piece.",
+    "image": "assets/Products/Rings/CSR107.JPG"
+  },
+  {
+    "id": "CSR108",
+    "code": "CSR108",
+    "name": "Twisted Band Ring",
+    "category": "Rings",
+    "metal": "Sterling Silver",
+    "stone": "White Zirconia",
+    "style": "Contemporary",
+    "occasion": "Casual, Gift",
+    "desc": "An elegant twisted band ring with sparkling white zirconia accents. The intertwining design symbolises eternal connection and adds a modern touch to classic silver jewellery.",
+    "image": "assets/Products/Rings/CSR108.JPG"
+  },
+  {
+    "id": "CSR154",
+    "code": "CSR154",
+    "name": "Floral Cluster Ring",
+    "category": "Rings",
+    "metal": "Sterling Silver",
+    "stone": "Multi-stone CZ",
+    "style": "Floral",
+    "occasion": "Party, Wedding",
+    "desc": "A beautiful floral cluster design with multiple brilliant-cut stones arranged in a bloom pattern. Delicate yet eye-catching, perfect for special occasions.",
+    "image": "assets/Products/Rings/CSR154.JPG"
+  },
+  {
+    "id": "CSR482",
+    "code": "CSR482",
+    "name": "Ring CSR482",
+    "category": "Rings",
+    "metal": "Sterling Silver",
+    "stone": "Cubic Zirconia",
+    "style": "Classic",
+    "occasion": "Everyday, Gift",
+    "desc": "A finely crafted sterling silver ring from Classic Silver Place, made for lasting shine and everyday elegance.",
+    "image": "assets/Products/Rings/CSR482.JPG"
+  },
+  {
+    "id": "CSR530",
+    "code": "CSR530",
+    "name": "Minimalist Band Ring",
+    "category": "Rings",
+    "metal": "Sterling Silver",
+    "stone": "Plain / Polished",
+    "style": "Minimalist",
+    "occasion": "Everyday, Casual",
+    "desc": "Clean lines and a polished finish define this minimalist band. Versatile enough to be worn solo or stacked with other rings for a layered look.",
+    "image": "assets/Products/Rings/CSR530.JPG"
+  },
+  {
+    "id": "CSR801",
+    "code": "CSR801",
+    "name": "Oval Stone Ring",
+    "category": "Rings",
+    "metal": "Sterling Silver",
+    "stone": "Oval CZ",
+    "style": "Classic",
+    "occasion": "Formal, Special Occasion",
+    "desc": "Featuring a large oval-cut centre stone, this ring makes a bold impression. The classic prong setting highlights the stone brilliance from every angle.",
+    "image": "assets/Products/Rings/CSR801.JPG"
+  },
+  {
+    "id": "CSR952",
+    "code": "CSR952",
+    "name": "Eternity Band Ring",
+    "category": "Rings",
+    "metal": "Sterling Silver",
+    "stone": "Round CZ Row",
+    "style": "Eternity",
+    "occasion": "Wedding, Anniversary",
+    "desc": "A full eternity band set with a continuous row of brilliant round-cut stones. Symbolising endless love, this ring is ideal as a wedding band or anniversary gift.",
+    "image": "assets/Products/Rings/CSR952.JPG"
+  },
+  {
+    "id": "CSR1204",
+    "code": "CSR1204",
+    "name": "Marquise Cut Ring",
+    "category": "Rings",
+    "metal": "Sterling Silver",
+    "stone": "Marquise CZ",
+    "style": "Vintage-inspired",
+    "occasion": "Formal, Engagement",
+    "desc": "The elongated marquise cut stone creates a slimming effect on the finger. Set in a sleek silver band with side-stone accents for added brilliance.",
+    "image": "assets/Products/Rings/CSR1204.JPG"
+  },
+  {
+    "id": "CSR1210",
+    "code": "CSR1210",
+    "name": "Halo Diamond Ring",
+    "category": "Rings",
+    "metal": "Sterling Silver",
+    "stone": "Halo CZ",
+    "style": "Halo",
+    "occasion": "Engagement, Special Occasion",
+    "desc": "A dazzling halo setting surrounds the centre stone with a ring of smaller stones, maximising sparkle and giving the impression of a larger centrepiece.",
+    "image": "assets/Products/Rings/CSR1210.JPG"
+  },
+  {
+    "id": "CSR1407",
+    "code": "CSR1407",
+    "name": "Princess Cut Ring",
+    "category": "Rings",
+    "metal": "Sterling Silver",
+    "stone": "Princess Cut CZ",
+    "style": "Modern",
+    "occasion": "Party, Formal",
+    "desc": "The sharp, geometric lines of the princess cut give this ring a modern edge. A bold choice for those who appreciate contemporary fine jewellery.",
+    "image": "assets/Products/Rings/CSR1407.JPG"
+  },
+  {
+    "id": "CSR1547",
+    "code": "CSR1547",
+    "name": "Vintage Filigree Ring",
+    "category": "Rings",
+    "metal": "Sterling Silver",
+    "stone": "Round CZ",
+    "style": "Vintage",
+    "occasion": "Wedding, Special Occasion",
+    "desc": "Intricate filigree metalwork surrounds a sparkling centre stone in this vintage-inspired design. Each detail is hand-finished for exceptional quality.",
+    "image": "assets/Products/Rings/CSR1547.JPG"
+  },
+  {
+    "id": "CSR2016",
+    "code": "CSR2016",
+    "name": "Stackable Thin Ring",
+    "category": "Rings",
+    "metal": "Sterling Silver",
+    "stone": "Accent CZ",
+    "style": "Stackable",
+    "occasion": "Everyday, Casual",
+    "desc": "Slim and delicate, this stackable ring is designed to be worn alone or layered with multiple bands. A wardrobe essential for the modern jewellery lover.",
+    "image": "assets/Products/Rings/CSR2016.JPG"
+  },
+  {
+    "id": "CSR2019",
+    "code": "CSR2019",
+    "name": "Heart Shape Ring",
+    "category": "Rings",
+    "metal": "Sterling Silver",
+    "stone": "Heart CZ",
+    "style": "Romantic",
+    "occasion": "Valentine's, Gift, Anniversary",
+    "desc": "A romantic heart-shaped centre stone set in a polished silver band. A heartfelt gift for anniversaries, Valentine's Day, or any expression of love.",
+    "image": "assets/Products/Rings/CSR2019.JPG"
+  },
+  {
+    "id": "CSR2301",
+    "code": "CSR2301",
+    "name": "Ring CSR2301",
+    "category": "Rings",
+    "metal": "Sterling Silver",
+    "stone": "Cubic Zirconia",
+    "style": "Classic",
+    "occasion": "Everyday, Gift",
+    "desc": "A finely crafted sterling silver ring from Classic Silver Place, made for lasting shine and everyday elegance.",
+    "image": "assets/Products/Rings/CSR2301.jpg"
+  },
+  {
+    "id": "CSR2341",
+    "code": "CSR2341",
+    "name": "Cocktail Statement Ring",
+    "category": "Rings",
+    "metal": "Sterling Silver",
+    "stone": "Large CZ Cluster",
+    "style": "Cocktail",
+    "occasion": "Party, Evening, Formal",
+    "desc": "Bold and glamorous, this cocktail ring features a large cluster of stones set in an elaborate silver mounting. Designed to turn heads at any event.",
+    "image": "assets/Products/Rings/CSR2341.JPG"
+  },
+  {
+    "id": "CSR2444",
+    "code": "CSR2444",
+    "name": "Pear Drop Ring",
+    "category": "Rings",
+    "metal": "Sterling Silver",
+    "stone": "Pear Cut CZ",
+    "style": "Classic",
+    "occasion": "Wedding, Bridal, Formal",
+    "desc": "The elegant pear-shaped stone tapers to a fine point, creating a graceful teardrop silhouette. Timeless and feminine, perfect for bridal or evening wear.",
+    "image": "assets/Products/Rings/CSR2444.JPG"
+  },
+  {
+    "id": "CSR2453",
+    "code": "CSR2453",
+    "name": "Three Stone Ring",
+    "category": "Rings",
+    "metal": "Sterling Silver",
+    "stone": "Three CZ",
+    "style": "Three Stone",
+    "occasion": "Anniversary, Engagement, Gift",
+    "desc": "Representing the past, present, and future, this three-stone ring is rich in symbolism and beauty. Each stone is individually prong-set for maximum brilliance.",
+    "image": "assets/Products/Rings/CSR2453.JPG"
+  },
+  {
+    "id": "CSR2605",
+    "code": "CSR2605",
+    "name": "Geometric Band Ring",
+    "category": "Rings",
+    "metal": "Sterling Silver",
+    "stone": "Baguette CZ",
+    "style": "Geometric",
+    "occasion": "Casual, Fashion",
+    "desc": "Clean geometric shapes and baguette-cut stones define this architectural ring. A contemporary design for those with a bold, modern aesthetic.",
+    "image": "assets/Products/Rings/CSR2605.JPG"
+  },
+  {
+    "id": "CSR2626",
+    "code": "CSR2626",
+    "name": "Rope Twist Ring",
+    "category": "Rings",
+    "metal": "Sterling Silver",
+    "stone": "Plain",
+    "style": "Textured",
+    "occasion": "Everyday, Casual, Gift",
+    "desc": "A classic rope-twist design crafted in polished sterling silver. The textured surface catches light beautifully, adding dimension without the need for stones.",
+    "image": "assets/Products/Rings/CSR2626.JPG"
+  },
+  {
+    "id": "CSE111",
+    "code": "CSE111",
+    "name": "Classic Stud Earrings",
+    "category": "Earrings",
+    "metal": "Sterling Silver",
+    "stone": "Round CZ",
+    "style": "Stud",
+    "occasion": "Everyday, Formal",
+    "desc": "Timeless round stud earrings featuring brilliant cubic zirconia set in sterling silver. A wardrobe staple that pairs effortlessly with any outfit, day or night.",
+    "image": "assets/Products/Earrings/CSE111.JPG"
+  },
+  {
+    "id": "CSE162",
+    "code": "CSE162",
+    "name": "Small Hoop Earrings",
+    "category": "Earrings",
+    "metal": "Sterling Silver",
+    "stone": "Plain",
+    "style": "Hoop",
+    "occasion": "Everyday, Casual",
+    "desc": "Sleek small hoops in polished sterling silver. Lightweight and comfortable for all-day wear, these hoops add a subtle polish to any look.",
+    "image": "assets/Products/Earrings/CSE162.JPG"
+  },
+  {
+    "id": "CSE163",
+    "code": "CSE163",
+    "name": "Drop Stud Earrings",
+    "category": "Earrings",
+    "metal": "Sterling Silver",
+    "stone": "Teardrop CZ",
+    "style": "Drop",
+    "occasion": "Casual, Office, Formal",
+    "desc": "A delicate teardrop stone drops gracefully below the earlobe. Simple yet sophisticated, these earrings transition seamlessly from desk to dinner.",
+    "image": "assets/Products/Earrings/CSE163.JPG"
+  },
+  {
+    "id": "CSE466",
+    "code": "CSE466",
+    "name": "Floral Stud Earrings",
+    "category": "Earrings",
+    "metal": "Sterling Silver",
+    "stone": "Multi CZ",
+    "style": "Floral",
+    "occasion": "Casual, Gift, Party",
+    "desc": "Inspired by nature, these floral studs feature petals of sparkling stones arranged in a bloom formation. Sweet, feminine, and perfect for gifting.",
+    "image": "assets/Products/Earrings/CSE466.JPG"
+  },
+  {
+    "id": "CSE504",
+    "code": "CSE504",
+    "name": "Chandelier Earrings",
+    "category": "Earrings",
+    "metal": "Sterling Silver",
+    "stone": "CZ Cascade",
+    "style": "Chandelier",
+    "occasion": "Party, Wedding, Formal",
+    "desc": "Cascading tiers of sparkling stones create a dramatic chandelier effect. These statement earrings are designed for evening wear and special occasions.",
+    "image": "assets/Products/Earrings/CSE504.JPG"
+  },
+  {
+    "id": "CSE526",
+    "code": "CSE526",
+    "name": "Long Tassel Earrings",
+    "category": "Earrings",
+    "metal": "Sterling Silver",
+    "stone": "CZ Chain",
+    "style": "Tassel",
+    "occasion": "Party, Evening, Fashion",
+    "desc": "Elegant long earrings with a delicate chain tassel effect. The movement adds a playful, fashion-forward touch to both casual and formal ensembles.",
+    "image": "assets/Products/Earrings/CSE526.JPG"
+  },
+  {
+    "id": "CSE824",
+    "code": "CSE824",
+    "name": "Geometric Drop Earrings",
+    "category": "Earrings",
+    "metal": "Sterling Silver",
+    "stone": "Baguette CZ",
+    "style": "Geometric",
+    "occasion": "Formal, Fashion, Party",
+    "desc": "Sharp geometric shapes and baguette-cut stones give these earrings a modern, architectural feel. A bold choice for the contemporary jewellery enthusiast.",
+    "image": "assets/Products/Earrings/CSE824.JPG"
+  },
+  {
+    "id": "CSE863",
+    "code": "CSE863",
+    "name": "Pearl & Silver Studs",
+    "category": "Earrings",
+    "metal": "Sterling Silver",
+    "stone": "Faux Pearl",
+    "style": "Classic Pearl",
+    "occasion": "Office, Wedding, Everyday",
+    "desc": "Classic faux pearl studs framed by a delicate sterling silver setting. Understated luxury that never goes out of style, ideal for professional and bridal settings.",
+    "image": "assets/Products/Earrings/CSE863.jpg"
+  },
+  {
+    "id": "CSE1305",
+    "code": "CSE1305",
+    "name": "Huggie Hoop Earrings",
+    "category": "Earrings",
+    "metal": "Sterling Silver",
+    "stone": "Pave CZ",
+    "style": "Huggie",
+    "occasion": "Everyday, Formal, Gift",
+    "desc": "Snug-fitting huggie hoops encrusted with pave-set cubic zirconia. These hoops sit close to the ear for a refined, polished appearance.",
+    "image": "assets/Products/Earrings/CSE1305.JPG"
+  },
+  {
+    "id": "CSE1308",
+    "code": "CSE1308",
+    "name": "Cluster Dangle Earrings",
+    "category": "Earrings",
+    "metal": "Sterling Silver",
+    "stone": "CZ Cluster",
+    "style": "Cluster Dangle",
+    "occasion": "Office, Party, Formal",
+    "desc": "A rich cluster of sparkling stones dangles elegantly from a silver post. These earrings are bold enough for evenings yet refined enough for the office.",
+    "image": "assets/Products/Earrings/CSE1308.JPG"
+  },
+  {
+    "id": "CSE1508",
+    "code": "CSE1508",
+    "name": "Teardrop Dangle Earrings",
+    "category": "Earrings",
+    "metal": "Sterling Silver",
+    "stone": "Teardrop CZ",
+    "style": "Dangle",
+    "occasion": "Wedding, Evening, Formal",
+    "desc": "A single large teardrop-cut stone swings freely for a graceful, eye-catching silhouette. Classic proportions make these suitable for a wide range of occasions.",
+    "image": "assets/Products/Earrings/CSE1508.JPG"
+  },
+  {
+    "id": "CSE1804",
+    "code": "CSE1804",
+    "name": "Statement Drop Earrings",
+    "category": "Earrings",
+    "metal": "Sterling Silver",
+    "stone": "Mixed CZ",
+    "style": "Statement",
+    "occasion": "Gala, Party, Special Occasion",
+    "desc": "A dramatic drop earring featuring an intricate arrangement of mixed-cut stones. For those who believe jewellery should make a statement, this piece delivers.",
+    "image": "assets/Products/Earrings/CSE1804.jpg"
+  },
+  {
+    "id": "CSP104",
+    "code": "CSP104",
+    "name": "Heart Pendant",
+    "category": "Pendants",
+    "metal": "Sterling Silver",
+    "stone": "CZ Heart",
+    "style": "Romantic",
+    "occasion": "Valentine's, Anniversary, Gift",
+    "desc": "A classic heart-shaped pendant with a sparkling cubic zirconia centre. Worn on a fine silver chain, it makes the perfect romantic gift for someone special.",
+    "image": "assets/Products/Pendants/CSP104.JPG"
+  },
+  {
+    "id": "CSP105",
+    "code": "CSP105",
+    "name": "Star Pendant",
+    "category": "Pendants",
+    "metal": "Sterling Silver",
+    "stone": "CZ Star",
+    "style": "Celestial",
+    "occasion": "Everyday, Casual, Gift",
+    "desc": "A dainty five-point star pendant that captures light beautifully. Minimalist and celestial, this pendant adds a subtle sparkle to everyday looks.",
+    "image": "assets/Products/Pendants/CSP105.JPG"
+  },
+  {
+    "id": "CSP106",
+    "code": "CSP106",
+    "name": "Cross Pendant",
+    "category": "Pendants",
+    "metal": "Sterling Silver",
+    "stone": "Plain",
+    "style": "Religious",
+    "occasion": "Gift, Everyday, Special",
+    "desc": "A finely crafted cross pendant in polished sterling silver. A meaningful piece that carries deep personal and spiritual significance.",
+    "image": "assets/Products/Pendants/CSP106.JPG"
+  },
+  {
+    "id": "CSP251",
+    "code": "CSP251",
+    "name": "Infinity Pendant",
+    "category": "Pendants",
+    "metal": "Sterling Silver",
+    "stone": "CZ Accents",
+    "style": "Symbolic",
+    "occasion": "Gift, Anniversary, Friendship",
+    "desc": "The infinity symbol rendered in sparkling silver with CZ accents. A popular choice symbolising endless love, friendship, or possibility.",
+    "image": "assets/Products/Pendants/CSP251.JPG"
+  },
+  {
+    "id": "CSP253",
+    "code": "CSP253",
+    "name": "Butterfly Pendant",
+    "category": "Pendants",
+    "metal": "Sterling Silver",
+    "stone": "Enamel & CZ",
+    "style": "Nature",
+    "occasion": "Gift, Birthday, Casual",
+    "desc": "A delicate butterfly pendant featuring enamel wings and sparkling stone details. Light, colourful, and full of life, a joyful gift for any occasion.",
+    "image": "assets/Products/Pendants/CSP253.JPG"
+  },
+  {
+    "id": "CSP354",
+    "code": "CSP354",
+    "name": "Circle Pendant",
+    "category": "Pendants",
+    "metal": "Sterling Silver",
+    "stone": "Open Circle",
+    "style": "Minimalist",
+    "occasion": "Everyday, Casual, Layering",
+    "desc": "A sleek open-circle pendant, a modern symbol of wholeness and continuity. Minimalist design that pairs well with layered necklace looks.",
+    "image": "assets/Products/Pendants/CSP354.JPG"
+  },
+  {
+    "id": "CSP465",
+    "code": "CSP465",
+    "name": "Floral Pendant",
+    "category": "Pendants",
+    "metal": "Sterling Silver",
+    "stone": "Multi CZ",
+    "style": "Floral",
+    "occasion": "Casual, Gift, Party",
+    "desc": "A beautifully detailed flower pendant with stones set in each petal. Feminine and elegant, inspired by the natural beauty of blooming flowers.",
+    "image": "assets/Products/Pendants/CSP465.JPG"
+  },
+  {
+    "id": "CSP557",
+    "code": "CSP557",
+    "name": "Initial Letter Pendant",
+    "category": "Pendants",
+    "metal": "Sterling Silver",
+    "stone": "Plain",
+    "style": "Personalised",
+    "occasion": "Birthday, Gift, Everyday",
+    "desc": "A personalised initial pendant crafted in polished sterling silver. A thoughtful and personal gift that holds special meaning for the recipient.",
+    "image": "assets/Products/Pendants/CSP557.JPG"
+  },
+  {
+    "id": "CSP810",
+    "code": "CSP810",
+    "name": "Moon & Star Pendant",
+    "category": "Pendants",
+    "metal": "Sterling Silver",
+    "stone": "CZ Star",
+    "style": "Celestial",
+    "occasion": "Gift, Everyday, Casual",
+    "desc": "A crescent moon cradling a sparkling star, a timeless celestial motif. This pendant carries an air of mystery and romance, perfect for dreamers.",
+    "image": "assets/Products/Pendants/CSP810.JPG"
+  },
+  {
+    "id": "CSP1030",
+    "code": "CSP1030",
+    "name": "Teardrop Pendant",
+    "category": "Pendants",
+    "metal": "Sterling Silver",
+    "stone": "Pear CZ",
+    "style": "Classic",
+    "occasion": "Formal, Everyday, Gift",
+    "desc": "A graceful pear-shaped stone set in a simple silver mount. Elegant in its simplicity, this pendant draws attention without overwhelming the neckline.",
+    "image": "assets/Products/Pendants/CSP1030.JPG"
+  },
+  {
+    "id": "CSP1209",
+    "code": "CSP1209",
+    "name": "Evil Eye Pendant",
+    "category": "Pendants",
+    "metal": "Sterling Silver",
+    "stone": "Blue CZ",
+    "style": "Symbolic",
+    "occasion": "Gift, Everyday, Talisman",
+    "desc": "The protective evil eye motif set with vibrant blue cubic zirconia. A culturally rich piece believed to ward off negative energy while adding striking colour.",
+    "image": "assets/Products/Pendants/CSP1209.jpg"
+  },
+  {
+    "id": "CSN255",
+    "code": "CSN255",
+    "name": "Layered Chain Necklace",
+    "category": "Necklaces",
+    "metal": "Sterling Silver",
+    "stone": "CZ Accents",
+    "style": "Layered",
+    "occasion": "Casual, Fashion, Party",
+    "desc": "A multi-strand layered necklace that combines different chain styles for a curated, fashion-forward look. Each strand features delicate CZ accents that catch the light.",
+    "image": "assets/Products/Necklaces/CSN255.JPG"
+  },
+  {
+    "id": "CSN405",
+    "code": "CSN405",
+    "name": "Tennis Necklace",
+    "category": "Necklaces",
+    "metal": "Sterling Silver",
+    "stone": "Full CZ Row",
+    "style": "Tennis",
+    "occasion": "Wedding, Gala, Formal",
+    "desc": "A classic tennis necklace set with a continuous line of brilliant round-cut cubic zirconia. Glamorous and timeless, the ultimate special occasion necklace.",
+    "image": "assets/Products/Necklaces/CSN405.JPG"
+  },
+  {
+    "id": "CSB156",
+    "code": "CSB156",
+    "name": "Bracelet CSB156",
+    "category": "Bracelets",
+    "metal": "Sterling Silver",
+    "stone": "Cubic Zirconia",
+    "style": "Bracelet",
+    "occasion": "Everyday, Gift",
+    "desc": "A sterling silver bracelet with clean finishing and comfortable wear for daily or occasion styling.",
+    "image": "assets/Products/Bracelets/CSB156.JPG"
+  },
+  {
+    "id": "CSB158",
+    "code": "CSB158",
+    "name": "Bracelet CSB158",
+    "category": "Bracelets",
+    "metal": "Sterling Silver",
+    "stone": "Cubic Zirconia",
+    "style": "Bracelet",
+    "occasion": "Everyday, Gift",
+    "desc": "A sterling silver bracelet with clean finishing and comfortable wear for daily or occasion styling.",
+    "image": "assets/Products/Bracelets/CSB158.JPG"
+  },
+  {
+    "id": "CSB452",
+    "code": "CSB452",
+    "name": "Bracelet CSB452",
+    "category": "Bracelets",
+    "metal": "Sterling Silver",
+    "stone": "Cubic Zirconia",
+    "style": "Bracelet",
+    "occasion": "Everyday, Gift",
+    "desc": "A sterling silver bracelet with clean finishing and comfortable wear for daily or occasion styling.",
+    "image": "assets/Products/Bracelets/CSB452.JPG"
+  },
+  {
+    "id": "CSB478",
+    "code": "CSB478",
+    "name": "Bracelet CSB478",
+    "category": "Bracelets",
+    "metal": "Sterling Silver",
+    "stone": "Cubic Zirconia",
+    "style": "Bracelet",
+    "occasion": "Everyday, Gift",
+    "desc": "A sterling silver bracelet with clean finishing and comfortable wear for daily or occasion styling.",
+    "image": "assets/Products/Bracelets/CSB478.JPG"
+  },
+  {
+    "id": "CSB627",
+    "code": "CSB627",
+    "name": "Bracelet CSB627",
+    "category": "Bracelets",
+    "metal": "Sterling Silver",
+    "stone": "Cubic Zirconia",
+    "style": "Bracelet",
+    "occasion": "Everyday, Gift",
+    "desc": "A sterling silver bracelet with clean finishing and comfortable wear for daily or occasion styling.",
+    "image": "assets/Products/Bracelets/CSB627.JPG"
+  },
+  {
+    "id": "CSB951",
+    "code": "CSB951",
+    "name": "Bracelet CSB951",
+    "category": "Bracelets",
+    "metal": "Sterling Silver",
+    "stone": "Cubic Zirconia",
+    "style": "Bracelet",
+    "occasion": "Everyday, Gift",
+    "desc": "A sterling silver bracelet with clean finishing and comfortable wear for daily or occasion styling.",
+    "image": "assets/Products/Bracelets/CSB951.jpg"
+  },
+  {
+    "id": "CSB1130",
+    "code": "CSB1130",
+    "name": "Bracelet CSB1130",
+    "category": "Bracelets",
+    "metal": "Sterling Silver",
+    "stone": "Cubic Zirconia",
+    "style": "Bracelet",
+    "occasion": "Everyday, Gift",
+    "desc": "A sterling silver bracelet with clean finishing and comfortable wear for daily or occasion styling.",
+    "image": "assets/Products/Bracelets/CSB1130.JPG"
+  }
+];
+const STORE_KEY='classicSilverPlaceCatalogV2';
+function loadP(){try{return JSON.parse(localStorage.getItem(STORE_KEY))||DEFAULT_PRODUCTS}catch{return DEFAULT_PRODUCTS}}
+const products=loadP();
+function esc(v){return String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+const search=document.getElementById('search');
+const acList=document.getElementById('autocompleteList');
+let acIndex=-1;
+function buildAc(q){
+  if(!q||q.length<1){acList.classList.remove('open');return;}
+  const matches=products.filter(p=>[p.name,p.code,p.category,p.stone,p.style,p.occasion].join(' ').toLowerCase().includes(q.toLowerCase())).slice(0,8);
+  if(!matches.length){acList.classList.remove('open');return;}
+  acList.innerHTML=matches.map(p=>`<a class="ac-item" href="product.html?id=${esc(p.id)}"><img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy"><div><div class="ac-item-cat">${esc(p.category)}</div><div class="ac-item-name">${esc(p.name)}</div><div class="ac-item-meta">${esc(p.code)} Â· ${esc(p.stone)}</div></div></a>`).join('');
+  acIndex=-1;acList.classList.add('open');
+}
+search.addEventListener('input',e=>buildAc(e.target.value));
+search.addEventListener('keydown',e=>{
+  const items=acList.querySelectorAll('.ac-item');
+  if(!items.length)return;
+  if(e.key==='ArrowDown'){e.preventDefault();acIndex=Math.min(acIndex+1,items.length-1);items.forEach((it,i)=>it.classList.toggle('active',i===acIndex));}
+  else if(e.key==='ArrowUp'){e.preventDefault();acIndex=Math.max(acIndex-1,0);items.forEach((it,i)=>it.classList.toggle('active',i===acIndex));}
+  else if(e.key==='Enter'&&acIndex>=0){e.preventDefault();items[acIndex].click();}
+  else if(e.key==='Enter'&&acIndex<0){e.preventDefault();window.location.href='catalog.html?q='+encodeURIComponent(e.target.value);}
+  else if(e.key==='Escape')acList.classList.remove('open');
+});
+document.addEventListener('click',e=>{if(!e.target.closest('.search-wrap'))acList.classList.remove('open');});
+})();
+</script>
+<script src="csp-api.js"></script>
+</body>
+</html>
