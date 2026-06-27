@@ -1003,8 +1003,10 @@ function saveProduct(){
   const imgs=pendingImages.length?pendingImages:['assets/classic-silver-place-logo.jpeg'];
   const item={id:editProductId||code+'-'+Date.now(),code,name,category:el('categoryInput').value,metal:el('metalInput').value.trim()||'Sterling Silver',stone:el('stoneInput').value.trim()||'Cubic Zirconia',style:el('styleInput').value.trim()||'Classic',occasion:el('occasionInput').value.trim()||'Everyday, Gift',desc:el('descInput').value.trim()||'Classic Silver Palace sterling silver jewellery.',images:imgs,image:imgs[0]};
   if(editProductId){products=products.map(p=>p.id===editProductId?item:p);}
-  else{products.unshift(item);editProductId=item.id;}
-  saveStore(STORE_KEY,products);renderAdminList();fillProductForm(item.id);notice('prodNotice','Product saved successfully.');
+  else{products.unshift(item);}
+  saveStore(STORE_KEY,products);renderAdminList();
+  if(editProductId){fillProductForm(editProductId);notice('prodNotice','Product updated successfully.');}
+  else{blankProduct();notice('prodNotice','Product added successfully.');}
 }
 
 document.addEventListener('click',e=>{

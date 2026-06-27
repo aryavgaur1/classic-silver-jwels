@@ -22,10 +22,16 @@
 .ac-item-name{font-size:13px;font-weight:700;color:var(--ink)}
 .ac-item-meta{font-size:11px;color:var(--muted)}
 .ac-item-cat{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--gold)}
+
+.search-wrap{position:relative;display:inline-block}
+.nav-search{border-radius:999px;padding:9px 44px 9px 16px}
+.search-icon-lbl{display:none}
+.search-icon-btn{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:var(--ink);border:0;display:grid;place-items:center;pointer-events:none}
+.search-icon-btn svg{width:14px;height:14px;display:block}
 </style>
 </head>
 <body>
-<header class="topbar"><nav class="nav"><a class="brand" href="index.html"><img src="assets/classic-silver-place-logo.jpeg" alt="Classic Silver Place logo"><div><strong class="csp-brand-name">Classic Silver Place</strong><span class="csp-tagline">Manufacturer & Exporter</span></div></a><div class="links"><a href="catalog.html">Catalog</a><a href="about.html">About Us</a><a href="faq.html" class="active">FAQ</a><a href="contact.html">Contact</a></div><div class="search-wrap"><span class="search-icon-lbl">🔍</span><input id="search" class="nav-search" placeholder="Search products…" autocomplete="off"><div class="autocomplete-list" id="autocompleteList"></div></div></nav></header>
+<header class="topbar"><nav class="nav"><a class="brand" href="index.html"><img src="assets/classic-silver-place-logo.jpeg" alt="Classic Silver Place logo"><div><strong class="csp-brand-name">Classic Silver Place</strong><span class="csp-tagline">Manufacturer & Exporter</span></div></a><div class="links"><a href="catalog.html">Catalog</a><a href="about.html">About Us</a><a href="faq.html" class="active">FAQ</a><a href="contact.html">Contact</a></div><div class="search-wrap"><input id="search" class="nav-search" placeholder="Search products…" autocomplete="off"><button type="button" class="search-icon-btn" tabindex="-1" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button><div class="autocomplete-list" id="autocompleteList"></div></div></nav></header>
 
 <main>
 <div class="section">

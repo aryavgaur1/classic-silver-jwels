@@ -52,6 +52,12 @@
 .ac-item-name{font-size:13px;font-weight:700;color:var(--ink)}
 .ac-item-meta{font-size:11px;color:var(--muted)}
 .ac-item-cat{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--gold)}
+
+.search-wrap{position:relative;display:inline-block}
+.nav-search{border-radius:999px;padding:9px 44px 9px 16px}
+.search-icon-lbl{display:none}
+.search-icon-btn{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;background:var(--ink);border:0;display:grid;place-items:center;pointer-events:none}
+.search-icon-btn svg{width:14px;height:14px;display:block}
 </style>
 </head>
 <body>
@@ -62,7 +68,7 @@
       <div><strong class="csp-brand-name">Classic Silver Place</strong><span class="csp-tagline">Manufacturer &amp; Exporter</span></div>
     </a>
     <div class="links">
-      <a href="index.html#catalog">Catalog</a>
+      <a href="catalog.html">Catalog</a>
       <a href="about.html">About Us</a>
       <a href="faq.html">FAQ</a>
       <a href="contact.html">Contact</a>
@@ -86,7 +92,7 @@ Tel: 0091-141-2360070 | Mobile: 0091-94140-72173</p>
     <div>
       <h3 class="serif">Quick Links</h3>
       <p>
-        <a href="index.html" style="color:#cfc7ba">Catalog</a><br>
+        <a href="catalog.html" style="color:#cfc7ba">Catalog</a><br>
         <a href="about.html" style="color:#cfc7ba">About Us</a><br>
         <a href="faq.html" style="color:#cfc7ba">FAQ &amp; Payment Options</a><br>
         <a href="contact.html" style="color:#cfc7ba">Send Enquiry</a><br>
@@ -764,7 +770,7 @@ function render() {
       <div class="not-found">
         <h1>Product Not Found</h1>
         <p>The product you are looking for does not exist or may have been removed.</p>
-        <a class="btn" href="index.html">← Back to Catalog</a>
+        <a class="btn" href="catalog.html">← Back to Catalog</a>
       </div>`;
     return;
   }
@@ -802,8 +808,8 @@ function render() {
 
   container.innerHTML = `
     <div class="breadcrumb">
-      <a href="index.html">Catalog</a> &rsaquo; 
-      <a href="index.html?cat=${escHtml(product.category)}">${escHtml(product.category)}</a> &rsaquo; 
+      <a href="catalog.html">Catalog</a> &rsaquo; 
+      <a href="catalog.html?cat=${escHtml(product.category)}">${escHtml(product.category)}</a> &rsaquo; 
       <span>${escHtml(product.name)}</span>
     </div>
 
@@ -830,7 +836,7 @@ function render() {
           <div class="enquiry-actions">
             <a class="btn gold" href="${contactUrl}">📩 Send Enquiry</a>
             <a class="btn ghost" href="mailto:info@indianclassicsilverjewellery.com?subject=${subject}&body=${body}">✉️ Email Directly</a>
-            <a class="btn ghost" href="index.html">← Back to Catalog</a>
+            <a class="btn ghost" href="catalog.html">← Back to Catalog</a>
           </div>
         </div>
 

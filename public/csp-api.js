@@ -116,8 +116,82 @@
       c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
   }
 
+
+  // ── Appearance ────────────────────────────────────────────
+  const APPEARANCE_KEY = 'cspAppearance';
+  const DEFAULT_APPEARANCE = {
+    displayFont:   "'Playfair Display', Georgia, serif",
+    displayWeight: '400',
+    bodyFont:      'Inter, system-ui, sans-serif',
+    baseFontSize:  '15',
+    lineHeight:    '1.65',
+    accentColor:   '#9b7230',
+    bgStyle:       'warm-cream',
+    radius:        '4px',
+    btnStyle:      'subtle',
+  };
+  const BG_MAP  = {'warm-cream':'#fdfcf9','pure-white':'#ffffff','cool-gray':'#f8f9fa','warm-gray':'#f7f5f2','parchment':'#f4ede0'};
+  const BTN_MAP = {'sharp':'0px','subtle':'4px','pill':'999px'};
+
+  function _loadGoogleFont(fontFamily) {
+    if (!fontFamily) return;
+    const match = fontFamily.match(/'([^']+)'|^([^,]+)/);
+    const name = match ? (match[1] || match[2]).trim() : null;
+    if (!name) return;
+    const system = ['Inter','Arial','Georgia','Times New Roman','system-ui','sans-serif','serif'];
+    if (system.some(s => name.toLowerCase().includes(s.toLowerCase()))) return;
+    const id = 'gfont-' + name.replace(/\s+/g,'-').toLowerCase();
+    if (document.getElementById(id)) return;
+    const link = document.createElement('link');
+    link.id = id; link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=' + encodeURIComponent(name) + ':wght@300;400;500;700&display=swap';
+    document.head.appendChild(link);
+  }
+
+  function applyAppearance() {
+    const A = load(APPEARANCE_KEY, DEFAULT_APPEARANCE);
+    const root = document.documentElement;
+    const accent    = A.accentColor  || DEFAULT_APPEARANCE.accentColor;
+    const bg        = BG_MAP[A.bgStyle] || '#fdfcf9';
+    const btnRadius = BTN_MAP[A.btnStyle] || '4px';
+    const dispFont  = A.displayFont  || DEFAULT_APPEARANCE.displayFont;
+    const bodyFont  = A.bodyFont     || DEFAULT_APPEARANCE.bodyFont;
+
+    root.style.setProperty('--gold',           accent);
+    root.style.setProperty('--accent',         accent);
+    root.style.setProperty('--paper',          bg);
+    root.style.setProperty('--page-bg',        bg);
+    root.style.setProperty('--radius',         A.radius || '4px');
+    root.style.setProperty('--btn-radius',     btnRadius);
+    root.style.setProperty('--display-font',   dispFont);
+    root.style.setProperty('--display-weight', A.displayWeight || '400');
+    root.style.setProperty('--body-font',      bodyFont);
+    root.style.setProperty('--base-font-size', (A.baseFontSize || '15') + 'px');
+    root.style.setProperty('--line-height',    A.lineHeight || '1.65');
+
+    if (document.body) {
+      document.body.style.background  = bg;
+      document.body.style.fontFamily  = bodyFont;
+      document.body.style.fontSize    = (A.baseFontSize || '15') + 'px';
+      document.body.style.lineHeight  = A.lineHeight || '1.65';
+    }
+
+    document.querySelectorAll('.serif, h1, h2, h3').forEach(el => {
+      el.style.fontFamily = dispFont;
+      if (A.displayWeight) el.style.fontWeight = A.displayWeight;
+    });
+
+    document.querySelectorAll('.btn').forEach(el => {
+      el.style.borderRadius = btnRadius;
+    });
+
+    _loadGoogleFont(dispFont);
+    _loadGoogleFont(bodyFont);
+  }
+
   // ── Apply everything ──────────────────────────────────────
   function applyAll() {
+    applyAppearance();
     const C  = load(CONTENT_KEY,  DEFAULT_CONTENT);
     const CT = load(CONTACT_KEY,  DEFAULT_CONTACT);
     const S  = load(SETTINGS_KEY, DEFAULT_SETTINGS);
@@ -206,6 +280,6 @@
 
   // Re-apply when another tab changes localStorage
   window.addEventListener('storage', e => {
-    if (['cspSiteContent','cspContactData','cspSiteSettings','cspFaqData'].includes(e.key)) applyAll();
+    if (['cspSiteContent','cspContactData','cspSiteSettings','cspFaqData','cspAppearance'].includes(e.key)) applyAll();
   });
 })();
