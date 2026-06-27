@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Classic Silver Palace</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500&display=swap');
+
+:root {
+  --ink: #111110;
+  --ink2: #3a3935;
+  --muted: #7a7670;
+  --subtle: #b0ab9f;
+  --line: #e6e0d6;
+  --line2: #f0ebe3;
+  --paper: #fdfcf9;
+  --soft: #f5f0e8;
+  --gold: #9b7230;
+  --gold-l: #c9a055;
+  --gold-bg: #faf5ec;
+  --ok: #1f7a4f;
+  --ok-bg: #edf7f2;
+  --bad: #9c3535;
+  --bad-bg: #fdf0f0;
+  --sidebar-bg: #13120f;
+  --sidebar-ink: #d4cdc0;
+  --sidebar-muted: #7a7670;
+  --sidebar-active: #9b7230;
+  --sidebar-hover: rgba(255,255,255,.04);
+  --topbar-h: 56px;
+  --sidebar-w: 220px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; font-family: Inter, system-ui, sans-serif; background: var(--paper); color: var(--ink); font-size: 14px; line-height: 1.5; }
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+
+/* ── LOGIN ────────────────────────────────────────────────── */
+#loginPage { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; }
+
+.lp-left {
+  background: var(--sidebar-bg);
+  display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+  padding: 72px 64px;
+  position: relative; overflow: hidden;
+}
+.lp-left::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 20% 80%, rgba(155,114,48,.22) 0%, transparent 55%);
+  pointer-events: none;
+}
+.lp-wordmark { position: relative; margin-bottom: 64px; }
+.lp-wordmark strong {
+  display: block; font-family: 'Playfair Display', Georgia, serif;
+  font-size: 18px; font-weight: 400; color: #f0e8d8; letter-spacing: .02em;
+}
+.lp-wordmark span {
+  display: block; font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--sidebar-muted); margin-top: 4px;
+}
+.lp-headline {
+  position: relative; font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(34px, 3.5vw, 52px); font-weight: 400; color: #f0e8d8;
+  line-height: 1.12; margin-bottom: 22px; max-width: 440px;
+}
+.lp-headline em { color: var(--gold-l); font-style: normal; }
+.lp-desc {
+  position: relative; font-size: 13.5px; color: var(--sidebar-muted);
+  line-height: 1.8; max-width: 380px;
+}
+.lp-chip {
+  position: relative; display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 36px; padding: 6px 14px;
+  border: 1px solid rgba(155,114,48,.35); border-radius: 2px;
+  font-size: 10px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--gold-l);
+}
+.lp-chip::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold-l); flex-shrink: 0;
+}
+
+.lp-right {
+  display: flex; align-items: center; justify-content: center;
+  padding: 48px 40px; background: var(--paper);
+}
+.login-box { width: 100%; max-width: 380px; }
+.login-box h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 26px; font-weight: 400; margin-bottom: 6px;
+}
+.login-box .sub { font-size: 13px; color: var(--muted); margin-bottom: 36px; }
+.field { margin-bottom: 16px; }
+.field label {
+  display: block; font-size: 10px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .15em; color: var(--muted); margin-bottom: 7px;
+}
+.field input, .field select, .field textarea {
+  width: 100%; border: 1px solid var(--line); border-radius: 4px;
+  padding: 10px 12px; background: white; font-size: 13.5px;
+  color: var(--ink); transition: border-color .15s;
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none; border-color: var(--gold);
+}
+.field textarea { min-height: 100px; resize: vertical; }
+.field input[type="range"] { padding: 6px 0; border: none; background: none; }
+
+.login-btn {
+  width: 100%; background: var(--ink); color: white; border: none; border-radius: 4px;
+  padding: 12px; font-size: 12px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .1em; margin-top: 6px; transition: background .15s;
+}
+.login-btn:hover { background: var(--ink2); }
+.login-err {
+  display: none; margin-top: 12px; padding: 10px 14px;
+  background: var(--bad-bg); color: var(--bad); border-radius: 4px;
+  font-size: 12px; font-weight: 600; text-align: center; border: 1px solid #f5cccc;
+}
+.login-err.show { display: block; }
+.back-link {
+  display: block; text-align: center; margin-top: 22px;
+  font-size: 11px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .12em; color: var(--muted);
+}
+.back-link:hover { color: var(--ink); }
+
+/* ── ADMIN SHELL ──────────────────────────────────────────── */
+#adminPanel { display: none; min-height: 100vh; }
+#adminPanel.open { display: flex; }
+
+/* SIDEBAR */
+.sidebar {
+  width: var(--sidebar-w); flex-shrink: 0;
+  background: var(--sidebar-bg);
+  display: flex; flex-direction: column;
+  position: sticky; top: 0; height: 100vh; overflow-y: auto;
+}
+.sb-brand {
+  padding: 20px 20px 14px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  display: flex; align-items: center; gap: 10px;
+}
+.sb-brand-img { width: 30px; height: 30px; border-radius: 3px; object-fit: contain; }
+.sb-brand-text strong {
+  display: block; font-family: 'Playfair Display', serif;
+  font-size: 13px; font-weight: 400; color: #f0e8d8;
+}
+.sb-brand-text span {
+  display: block; font-size: 9px; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--sidebar-muted); margin-top: 2px;
+}
+.sb-nav { flex: 1; padding: 16px 0; }
+.sb-section-label {
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .18em; color: rgba(255,255,255,.22);
+  padding: 10px 20px 5px; display: block;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 20px; font-size: 12.5px; font-weight: 500;
+  color: var(--sidebar-muted); border: none; background: none;
+  width: 100%; text-align: left; cursor: pointer;
+  transition: color .12s, background .12s;
+  border-left: 2px solid transparent;
+}
+.nav-item:hover { background: var(--sidebar-hover); color: #d4cdc0; }
+.nav-item.active { color: var(--gold-l); border-left-color: var(--gold); background: rgba(155,114,48,.08); }
+.nav-item svg { flex-shrink: 0; opacity: .7; }
+.nav-item.active svg { opacity: 1; }
+
+.sb-footer {
+  padding: 14px 20px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.sb-footer-btn {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11.5px; color: var(--sidebar-muted);
+  background: none; border: none; padding: 6px 0;
+  cursor: pointer; transition: color .12s;
+}
+.sb-footer-btn:hover { color: #d4cdc0; }
+
+/* MAIN CONTENT */
+.main-area { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+.topbar {
+  height: var(--topbar-h); background: white;
+  border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 28px; gap: 12px; flex-shrink: 0;
+  position: sticky; top: 0; z-index: 20;
+}
+.topbar-title {
+  font-size: 14px; font-weight: 600; color: var(--ink);
+  display: flex; align-items: center; gap: 8px;
+}
+.topbar-title .breadcrumb { font-weight: 400; color: var(--muted); }
+.topbar-tools { display: flex; gap: 8px; align-items: center; }
+
+.btn {
+  background: var(--ink); color: white; border: none; border-radius: 4px;
+  padding: 8px 14px; font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .08em; cursor: pointer;
+  transition: background .13s;
+}
+.btn:hover { background: var(--ink2); }
+.btn.gold { background: var(--gold); }
+.btn.gold:hover { background: #7d5a22; }
+
+.sbtn {
+  background: white; color: var(--ink); border: 1px solid var(--line);
+  border-radius: 4px; padding: 7px 12px; font-size: 11px; font-weight: 600;
+  cursor: pointer; transition: border-color .13s, background .13s;
+}
+.sbtn:hover { border-color: var(--ink); background: var(--soft); }
+.sbtn.danger { background: var(--bad-bg); color: var(--bad); border-color: #f5cccc; }
+.sbtn.danger:hover { background: #fae0e0; }
+.sbtn.success { background: var(--ok-bg); color: var(--ok); border-color: #c3e8d4; }
+.sbtn.success:hover { background: #d6f0e3; }
+
+/* TAB BODIES */
+.tab-body { display: none; flex: 1; overflow-y: auto; }
+.tab-body.active { display: block; }
+.tab-inner { max-width: 1300px; padding: 28px; }
+
+/* PAGE HEADER */
+.page-hd {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 24px; gap: 16px; flex-wrap: wrap; align-items: center;
+}
+.page-hd h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px; font-weight: 400;
+}
+.page-hd-meta { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.page-hd-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+
+/* CARDS */
+.card {
+  background: white; border: 1px solid var(--line); border-radius: 6px;
+  padding: 22px;
+}
+.card-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .14em; color: var(--muted); margin-bottom: 18px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--line2);
+}
+.card-title-lg {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px; font-weight: 400; margin-bottom: 18px;
+}
+
+/* NOTICE */
+.notice {
+  padding: 9px 12px; border-radius: 4px; display: none;
+  font-size: 12px; font-weight: 600; border: 1px solid transparent;
+}
+.notice.show { display: block; }
+.notice.ok { background: var(--ok-bg); color: var(--ok); border-color: #c3e8d4; }
+.notice.err { background: var(--bad-bg); color: var(--bad); border-color: #f5cccc; }
+
+/* PRODUCTS LAYOUT */
+.prod-shell { display: grid; grid-template-columns: 360px 1fr; gap: 20px; }
+.img-preview {
+  aspect-ratio: 1/1; border: 1px solid var(--line); border-radius: 6px;
+  background: var(--soft); overflow: hidden; display: flex;
+  align-items: center; justify-content: center; margin-bottom: 14px;
+  position: relative;
+}
+.img-preview img { width: 100%; height: 100%; object-fit: contain; }
+.img-preview .ph {
+  font-size: 11px; color: var(--subtle); text-align: center;
+  padding: 20px; line-height: 1.6;
+}
+.file-upload-area {
+  border: 1px dashed var(--line); border-radius: 4px; padding: 14px 12px;
+  text-align: center; cursor: pointer; transition: border-color .15s;
+  font-size: 12px; color: var(--muted);
+}
+.file-upload-area:hover { border-color: var(--gold); color: var(--ink); }
+
+.form-grid { display: grid; gap: 14px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* PRODUCT LIST */
+.list-controls {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 14px; gap: 12px;
+}
+.list-count { font-size: 12px; color: var(--muted); font-weight: 500; }
+.search-input {
+  border: 1px solid var(--line); border-radius: 4px;
+  padding: 8px 12px; font-size: 12.5px; width: 220px;
+  transition: border-color .15s;
+}
+.search-input:focus { outline: none; border-color: var(--gold); }
+
+.admin-list { display: grid; gap: 8px; }
+.admin-row {
+  display: grid; grid-template-columns: 52px 1fr auto;
+  gap: 12px; align-items: center;
+  border: 1px solid var(--line); border-radius: 5px;
+  padding: 10px 12px; background: white;
+  transition: border-color .13s;
+}
+.admin-row:hover { border-color: #ccc5b8; }
+.admin-row img {
+  width: 52px; height: 52px; object-fit: cover;
+  border-radius: 4px; background: var(--soft);
+}
+.admin-row strong { display: block; font-size: 12.5px; font-weight: 600; margin-bottom: 2px; }
+.admin-row span { font-size: 11.5px; color: var(--muted); }
+.row-btns { display: flex; gap: 6px; }
+
+/* FAQ */
+.faq-shell { display: grid; grid-template-columns: 360px 1fr; gap: 20px; }
+.faq-item {
+  border: 1px solid var(--line); border-radius: 5px;
+  padding: 14px; margin-bottom: 8px; background: white;
+}
+.faq-item strong { display: block; font-size: 13px; margin-bottom: 4px; }
+.faq-item p { font-size: 12px; color: var(--muted); line-height: 1.55; }
+.faq-item-actions { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+
+/* CONTENT / CONTACT / SETTINGS GRIDS */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+.inrow { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.section-divider {
+  border: none; border-top: 1px solid var(--line2);
+  margin: 20px 0;
+}
+.hint {
+  font-size: 11px; color: var(--subtle); margin-bottom: 10px;
+  display: block; line-height: 1.5;
+}
+
+/* TYPOGRAPHY PREVIEW */
+.type-preview {
+  background: var(--soft); border: 1px solid var(--line); border-radius: 5px;
+  padding: 20px; margin-top: 6px; min-height: 120px;
+}
+.type-preview .preview-site-title {
+  font-size: 26px; font-weight: 500; margin-bottom: 6px;
+}
+.type-preview .preview-body {
+  font-size: 14px; color: var(--ink2); line-height: 1.6;
+}
+
+/* COLOR SWATCHES */
+.swatch-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.swatch {
+  width: 36px; height: 36px; border-radius: 4px;
+  border: 2px solid transparent; cursor: pointer; transition: transform .13s;
+}
+.swatch:hover { transform: scale(1.1); }
+.swatch.selected { border-color: var(--ink); }
+
+/* RESPONSIVE */
+@media (max-width: 960px) {
+  #loginPage { grid-template-columns: 1fr; }
+  .lp-left { display: none; }
+  .prod-shell, .faq-shell, .two-col, .three-col { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+}
+@media (max-width: 600px) {
+  .tab-inner { padding: 16px; }
+  .lp-right { padding: 32px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ LOGIN ══════════════ -->
+<div id="loginPage">
+  <div class="lp-left">
+    <div class="lp-wordmark">
+      <strong>Classic Silver Palace</strong>
+      <span>Manufacturer &amp; Exporter, Jaipur</span>
+    </div>
+    <h1 class="lp-headline">Manage your<br><em>Silver Catalog</em><br>with precision.</h1>
+    <p class="lp-desc">Full control over products, site content, payment details, and more — all from a single, secure interface.</p>
+    <div class="lp-chip">Secured Admin Access</div>
+  </div>
+  <div class="lp-right">
+    <div class="login-box">
+      <h2>Sign In</h2>
+      <p class="sub">Enter your credentials to access the admin panel.</p>
+      <div class="field">
+        <label>Username</label>
+        <input type="text" id="loginUser" placeholder="Your username" autocomplete="username">
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="loginPass" placeholder="••••••••••" autocomplete="current-password">
+      </div>
+      <button class="login-btn" id="loginBtn">Sign In</button>
+      <div class="login-err" id="loginErr">Incorrect username or password. Please try again.</div>
+      <a class="back-link" href="index.html">← Back to Site</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ ADMIN PANEL ══════════════ -->
+<div id="adminPanel">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-brand">
+      <img class="sb-brand-img" src="assets/classic-silver-place-logo.jpeg" alt="">
+      <div class="sb-brand-text">
+        <strong>Classic Silver Palace</strong>
+        <span>Admin Panel</span>
+      </div>
+    </div>
+    <nav class="sb-nav">
+      <span class="sb-section-label">Catalog</span>
+      <button class="nav-item active" data-tab="products">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="7" height="7" rx="1"/><rect x="15" y="3" width="7" height="7" rx="1"/><rect x="2" y="14" width="7" height="7" rx="1"/><rect x="15" y="14" width="7" height="7" rx="1"/></svg>
+        Products
+      </button>
+      <span class="sb-section-label" style="margin-top:10px">Site</span>
+      <button class="nav-item" data-tab="content">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+        Site Content
+      </button>
+      <button class="nav-item" data-tab="faq">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        FAQ
+      </button>
+      <button class="nav-item" data-tab="contact">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.08 3.4 2 2 0 0 1 3.05 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"/></svg>
+        Contact &amp; Payment
+      </button>
+      <span class="sb-section-label" style="margin-top:10px">System</span>
+      <button class="nav-item" data-tab="appearance">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a1 1 0 0 0-1.41 0l-.34.33A7.054 7.054 0 0 0 12 3a7 7 0 0 0-5.31 11.5l-.34.33a1 1 0 0 0 0 1.41l.7.7a1 1 0 0 0 1.41 0l.33-.33A7 7 0 1 0 19.07 4.93z"/></svg>
+        Appearance
+      </button>
+      <button class="nav-item" data-tab="settings">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </button>
+    </nav>
+    <div class="sb-footer">
+      <a class="sb-footer-btn" href="index.html" target="_blank">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        View Live Site
+      </a>
+      <button class="sb-footer-btn" id="logoutBtn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN AREA -->
+  <div class="main-area">
+    <header class="topbar">
+      <div class="topbar-title">
+        <span id="topbar-label">Products</span>
+      </div>
+      <div class="topbar-tools" id="topbarTools">
+        <!-- injected per tab -->
+      </div>
+    </header>
+
+    <!-- ── PRODUCTS ── -->
+    <div class="tab-body active" id="tab-products">
+      <div class="tab-inner">
+        <div class="prod-shell">
+          <aside>
+            <div class="card">
+              <div class="card-title" id="formTitle">New Product</div>
+              <div class="notice" id="prodNotice" style="margin-bottom:14px"></div>
+              <div class="form-grid">
+                <div id="imageGallery" style="display:flex;flex-wrap:wrap;gap:8px;min-height:72px;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--surface);margin-bottom:4px;align-items:flex-start"><span id="galleryPh" style="font-size:12px;color:var(--subtle);align-self:center;margin:auto">No images yet</span></div>
+                <div class="file-upload-area" id="uploadArea" onclick="document.getElementById('imageFile').click()">
+                  + Add Images (select multiple)
+                  <input id="imageFile" type="file" accept="image/*" multiple style="display:none">
+                </div>
+                <p style="font-size:11px;color:var(--subtle);margin:4px 0 0">First image = main photo shown on site. Use ← → to reorder, ✕ to remove.</p>
+                <div class="field"><label>SKU Code</label><input id="codeInput" placeholder="CSR1001"></div>
+                <div class="field"><label>Product Name</label><input id="nameInput" placeholder="Classic Solitaire Ring"></div>
+                <div class="field"><label>Category</label>
+                  <select id="categoryInput">
+                    <option>Rings</option><option>Earrings</option><option>Pendants</option><option>Necklaces</option><option>Bracelets</option>
+                  </select>
+                </div>
+                <div class="form-row">
+                  <div class="field"><label>Metal</label><input id="metalInput" placeholder="Sterling Silver"></div>
+                  <div class="field"><label>Stone</label><input id="stoneInput" placeholder="Cubic Zirconia"></div>
+                </div>
+                <div class="form-row">
+                  <div class="field"><label>Style</label><input id="styleInput" placeholder="Classic"></div>
+                  <div class="field"><label>Occasion</label><input id="occasionInput" placeholder="Everyday, Gift"></div>
+                </div>
+                <div class="field"><label>Description</label><textarea id="descInput" placeholder="Product description..."></textarea></div>
+                <button class="btn" id="saveBtn">Save Product</button>
+                <button class="sbtn" id="newBtn" style="margin-top:4px">Clear / New Product</button>
+              </div>
+            </div>
+          </aside>
+
+          <div>
+            <div class="card">
+              <div class="list-controls">
+                <span class="list-count">All products &mdash; <span id="prodCount">0</span> items</span>
+                <input class="search-input" id="adminSearch" placeholder="Search by code, name, category...">
+              </div>
+              <div class="admin-list" id="adminList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SITE CONTENT ── -->
+    <div class="tab-body" id="tab-content">
+      <div class="tab-inner">
+        <div class="page-hd">
+          <div>
+            <h2>Site Content</h2>
+            <div class="page-hd-meta">Edit all text shown on the public website</div>
+          </div>
+          <div class="page-hd-actions">
+            <div class="notice" id="contentNotice"></div>
+            <button class="btn" id="saveContentBtn">Save All Content</button>
+          </div>
+        </div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">Hero Section</div>
+            <div class="field"><label>Eyebrow (small text above title)</label><input id="c_eyebrow" placeholder="Established 1970 – Jaipur, India"></div>
+            <div class="field"><label>Hero Title</label><input id="c_heroTitle" placeholder="Classic Silver Palace Jewellery Catalog"></div>
+            <div class="field"><label>Hero Description</label><textarea id="c_heroDesc" style="min-height:90px"></textarea></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Company Introduction</div>
+            <span class="hint">Shown on homepage and About page</span>
+            <textarea id="c_intro" style="min-height:180px;width:100%;border:1px solid var(--line);border-radius:4px;padding:10px;font-size:13px;resize:vertical;background:var(--paper);font-family:Inter,sans-serif"></textarea>
+          </div>
+          <div class="card">
+            <div class="card-title">Our Products Section</div>
+            <textarea id="c_ourProducts" style="min-height:140px;width:100%;border:1px solid var(--line);border-radius:4px;padding:10px;font-size:13px;resize:vertical;background:var(--paper);font-family:Inter,sans-serif"></textarea>
+          </div>
+          <div class="card">
+            <div class="card-title">Infrastructure</div>
+            <textarea id="c_infra" style="min-height:180px;width:100%;border:1px solid var(--line);border-radius:4px;padding:10px;font-size:13px;resize:vertical;background:var(--paper);font-family:Inter,sans-serif"></textarea>
+          </div>
+          <div class="card">
+            <div class="card-title">Why Choose Us</div>
+            <textarea id="c_why" style="min-height:160px;width:100%;border:1px solid var(--line);border-radius:4px;padding:10px;font-size:13px;resize:vertical;background:var(--paper);font-family:Inter,sans-serif"></textarea>
+          </div>
+          <div class="card">
+            <div class="card-title">Address</div>
+            <textarea id="c_address" style="min-height:130px;width:100%;border:1px solid var(--line);border-radius:4px;padding:10px;font-size:13px;resize:vertical;background:var(--paper);font-family:Inter,sans-serif"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FAQ ── -->
+    <div class="tab-body" id="tab-faq">
+      <div class="tab-inner">
+        <div class="page-hd">
+          <h2>FAQ</h2>
+        </div>
+        <div class="faq-shell">
+          <aside>
+            <div class="card">
+              <div class="card-title" id="faqFormTitle">New FAQ Item</div>
+              <div class="notice" id="faqNotice" style="margin-bottom:14px"></div>
+              <div class="form-grid">
+                <div class="field"><label>Question</label><input id="faqQ" placeholder="Do you ship internationally?"></div>
+                <div class="field"><label>Answer</label><textarea id="faqA" style="min-height:140px" placeholder="Yes, we ship worldwide..."></textarea></div>
+                <button class="btn" id="saveFaqBtn">Save FAQ Item</button>
+                <button class="sbtn" id="newFaqBtn" style="margin-top:4px">New FAQ</button>
+              </div>
+            </div>
+          </aside>
+          <div class="card">
+            <div class="list-controls">
+              <span class="list-count">FAQ items &mdash; <span id="faqCount">0</span> total</span>
+            </div>
+            <div id="faqList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CONTACT & PAYMENT ── -->
+    <div class="tab-body" id="tab-contact">
+      <div class="tab-inner">
+        <div class="page-hd">
+          <div>
+            <h2>Contact &amp; Payment</h2>
+            <div class="page-hd-meta">Bank details and contact information shown to customers</div>
+          </div>
+          <div class="page-hd-actions">
+            <div class="notice" id="contactNotice"></div>
+            <button class="btn" id="saveContactBtn">Save Contact Info</button>
+          </div>
+        </div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">PayPal</div>
+            <div class="field"><label>PayPal Email</label><input id="p_paypalEmail"></div>
+            <div class="field"><label>PayPal Note</label><textarea id="p_paypalNote" style="min-height:70px"></textarea></div>
+          </div>
+          <div class="card">
+            <div class="card-title">USD Bank Transfer</div>
+            <div class="field"><label>Bank Name</label><input id="p_usdBank"></div>
+            <div class="form-row">
+              <div class="field"><label>SWIFT Code</label><input id="p_usdSwift"></div>
+              <div class="field"><label>Account Number</label><input id="p_usdAcc"></div>
+            </div>
+            <div class="form-row">
+              <div class="field"><label>Routing / ABA</label><input id="p_usdRouting"></div>
+              <div class="field"><label>Beneficiary Bank</label><input id="p_usdBeneBank"></div>
+            </div>
+            <div class="field"><label>Beneficiary Account No.</label><input id="p_usdBeneAcc"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">GBP Bank Transfer</div>
+            <div class="field"><label>Bank Name</label><input id="p_gbpBank"></div>
+            <div class="form-row">
+              <div class="field"><label>SWIFT Code</label><input id="p_gbpSwift"></div>
+              <div class="field"><label>Sort Code</label><input id="p_gbpSort"></div>
+            </div>
+            <div class="form-row">
+              <div class="field"><label>Account Number</label><input id="p_gbpAcc"></div>
+              <div class="field"><label>Beneficiary Account No.</label><input id="p_gbpBeneAcc"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">EUR Bank Transfer</div>
+            <div class="field"><label>Bank Name</label><input id="p_eurBank"></div>
+            <div class="form-row">
+              <div class="field"><label>SWIFT Code</label><input id="p_eurSwift"></div>
+              <div class="field"><label>IBAN</label><input id="p_eurIban"></div>
+            </div>
+            <div class="field"><label>Beneficiary Account No.</label><input id="p_eurBeneAcc"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Contact Information</div>
+            <div class="field"><label>Company Name</label><input id="p_companyName"></div>
+            <div class="field"><label>Address Line 1</label><input id="p_addr1"></div>
+            <div class="form-row">
+              <div class="field"><label>Address Line 2</label><input id="p_addr2"></div>
+              <div class="field"><label>City / State / PIN</label><input id="p_city"></div>
+            </div>
+            <div class="form-row">
+              <div class="field"><label>Phone</label><input id="p_phone"></div>
+              <div class="field"><label>Mobile</label><input id="p_mobile"></div>
+            </div>
+            <div class="field"><label>Email</label><input id="p_email"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Enquiry Form</div>
+            <div class="field"><label>Owner Email (receives enquiries)</label><input id="p_ownerEmail"></div>
+            <div class="field"><label>Reply-To Label</label><input id="p_replyLabel"></div>
+            <div class="field"><label>Minimum Order Note</label><textarea id="p_minOrder" style="min-height:60px"></textarea></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── APPEARANCE ── -->
+    <div class="tab-body" id="tab-appearance">
+      <div class="tab-inner">
+        <div class="page-hd">
+          <div>
+            <h2>Appearance</h2>
+            <div class="page-hd-meta">Typography, colours, and visual style for the public site</div>
+          </div>
+          <div class="page-hd-actions">
+            <div class="notice" id="appearanceNotice"></div>
+            <button class="btn" id="saveAppearanceBtn">Save Appearance</button>
+          </div>
+        </div>
+
+        <div class="two-col" style="margin-bottom:18px">
+          <div class="card">
+            <div class="card-title">Display / Heading Font</div>
+            <span class="hint">Used for headings, titles, and hero text on the public site</span>
+            <div class="field">
+              <label>Font Family</label>
+              <select id="a_displayFont">
+                <option value="'Playfair Display', Georgia, serif">Playfair Display — Classic serif (current)</option>
+                <option value="Georgia, 'Times New Roman', serif">Georgia — Traditional serif</option>
+                <option value="'Cormorant Garamond', Garamond, serif">Cormorant Garamond — Elegant editorial</option>
+                <option value="'EB Garamond', Garamond, serif">EB Garamond — Timeless book serif</option>
+                <option value="'Libre Baskerville', Baskerville, serif">Libre Baskerville — Strong serif</option>
+                <option value="Inter, system-ui, sans-serif">Inter — Clean modern sans-serif</option>
+                <option value="'DM Sans', system-ui, sans-serif">DM Sans — Geometric sans-serif</option>
+                <option value="'Josefin Sans', sans-serif">Josefin Sans — Structured, fashion-forward</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Font Weight</label>
+              <select id="a_displayWeight">
+                <option value="300">Light (300)</option>
+                <option value="400" selected>Regular (400)</option>
+                <option value="500">Medium (500)</option>
+                <option value="600">Semi-bold (600)</option>
+                <option value="700">Bold (700)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Body Font</div>
+            <span class="hint">Used for paragraphs, product descriptions, navigation</span>
+            <div class="field">
+              <label>Font Family</label>
+              <select id="a_bodyFont">
+                <option value="Inter, system-ui, sans-serif">Inter — Clean sans-serif (current)</option>
+                <option value="'DM Sans', system-ui, sans-serif">DM Sans — Rounded sans-serif</option>
+                <option value="'Source Sans 3', sans-serif">Source Sans 3 — Neutral and readable</option>
+                <option value="'Lato', sans-serif">Lato — Warm humanist sans</option>
+                <option value="'Nunito', sans-serif">Nunito — Friendly rounded</option>
+                <option value="Georgia, serif">Georgia — Serif body</option>
+                <option value="'Crimson Text', serif">Crimson Text — Literary serif</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Base Font Size (px)</label>
+              <div style="display:flex;gap:12px;align-items:center">
+                <input type="range" id="a_baseFontSize" min="13" max="18" value="15" step="1" style="flex:1">
+                <span id="a_fontSizeLabel" style="font-size:12px;color:var(--muted);min-width:28px">15px</span>
+              </div>
+            </div>
+            <div class="field">
+              <label>Line Height</label>
+              <select id="a_lineHeight">
+                <option value="1.5">Compact (1.5)</option>
+                <option value="1.65" selected>Normal (1.65)</option>
+                <option value="1.8">Relaxed (1.8)</option>
+                <option value="2.0">Spacious (2.0)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="two-col" style="margin-bottom:18px">
+          <div class="card">
+            <div class="card-title">Brand Accent Colour</div>
+            <span class="hint">Used for buttons, highlights, and key UI elements</span>
+            <div class="field">
+              <label>Choose a Preset</label>
+              <div class="swatch-row" id="accentSwatches">
+                <div class="swatch selected" data-color="#9b7230" style="background:#9b7230" title="Gold (default)"></div>
+                <div class="swatch" data-color="#8b6914" style="background:#8b6914" title="Deep Gold"></div>
+                <div class="swatch" data-color="#6b4c3b" style="background:#6b4c3b" title="Warm Brown"></div>
+                <div class="swatch" data-color="#2c5f5d" style="background:#2c5f5d" title="Teal"></div>
+                <div class="swatch" data-color="#4a6741" style="background:#4a6741" title="Forest Green"></div>
+                <div class="swatch" data-color="#7b4d8c" style="background:#7b4d8c" title="Plum"></div>
+                <div class="swatch" data-color="#2f4a7c" style="background:#2f4a7c" title="Navy"></div>
+                <div class="swatch" data-color="#8c3a3a" style="background:#8c3a3a" title="Burgundy"></div>
+              </div>
+            </div>
+            <div class="field" style="margin-top:10px">
+              <label>Custom Hex Colour</label>
+              <div style="display:flex;gap:10px;align-items:center">
+                <input type="color" id="a_accentColor" value="#9b7230" style="width:48px;height:36px;padding:2px;border-radius:4px;border:1px solid var(--line);cursor:pointer">
+                <input type="text" id="a_accentHex" value="#9b7230" placeholder="#9b7230" style="flex:1;max-width:120px">
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">Site Background</div>
+            <span class="hint">Background tone used across pages</span>
+            <div class="field">
+              <label>Background Style</label>
+              <select id="a_bgStyle">
+                <option value="warm-cream">Warm Cream — #fdfcf9 (current)</option>
+                <option value="pure-white">Pure White — #ffffff</option>
+                <option value="cool-gray">Cool Light Gray — #f8f9fa</option>
+                <option value="warm-gray">Warm Light Gray — #f7f5f2</option>
+                <option value="parchment">Deep Parchment — #f4ede0</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Card / Panel Radius</label>
+              <select id="a_radius">
+                <option value="0px">Square (0px)</option>
+                <option value="4px" selected>Subtle (4px)</option>
+                <option value="8px">Rounded (8px)</option>
+                <option value="12px">Soft (12px)</option>
+                <option value="16px">Very Rounded (16px)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Button Style</label>
+              <select id="a_btnStyle">
+                <option value="sharp">Sharp — No radius</option>
+                <option value="subtle" selected>Subtle — 4px radius</option>
+                <option value="pill">Pill — Full round</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:18px">
+          <div class="card-title">Live Preview</div>
+          <span class="hint">This is an approximate preview — changes apply to the public site after saving.</span>
+          <div class="type-preview" id="typePreview">
+            <div class="preview-site-title" id="previewTitle" style="font-family:'Playfair Display',Georgia,serif;font-weight:400">Classic Silver Palace</div>
+            <div class="preview-body" id="previewBody" style="font-family:Inter,sans-serif;font-size:15px;line-height:1.65">
+              Established in 1970, Classic Silver Palace has carved a niche for itself in the market as a leading wholesale manufacturer and exporter of Sterling Silver Jewellery.
+            </div>
+            <button id="previewBtn" style="margin-top:14px;padding:9px 20px;border-radius:4px;border:none;font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;cursor:default;background:#9b7230;color:white">View Catalog</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Export Appearance Config</div>
+          <span class="hint">Download a CSS snippet you can paste into your main site stylesheet to apply these settings.</span>
+          <button class="sbtn" id="exportCssBtn" style="margin-top:6px">Download CSS Variables</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SETTINGS ── -->
+    <div class="tab-body" id="tab-settings">
+      <div class="tab-inner">
+        <div class="page-hd">
+          <div>
+            <h2>Settings</h2>
+            <div class="page-hd-meta">Brand details, stats bar, security, and data management</div>
+          </div>
+          <div class="page-hd-actions">
+            <div class="notice" id="settingsNotice"></div>
+            <button class="btn" id="saveSettingsBtn">Save Settings</button>
+          </div>
+        </div>
+        <div class="two-col">
+          <div class="card">
+            <div class="card-title">Brand</div>
+            <div class="field"><label>Site Title</label><input id="s_siteTitle" placeholder="Classic Silver Palace"></div>
+            <div class="field"><label>Tagline</label><input id="s_tagline" placeholder="Manufacturer &amp; Exporter"></div>
+            <div class="field"><label>Footer Description</label><textarea id="s_footerDesc" style="min-height:80px"></textarea></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Stats Bar (Homepage)</div>
+            <div class="form-row">
+              <div class="field"><label>Stat 1 Value</label><input id="s_stat1val" placeholder="1970"></div>
+              <div class="field"><label>Stat 1 Label</label><input id="s_stat1lbl" placeholder="Established"></div>
+            </div>
+            <div class="form-row">
+              <div class="field"><label>Stat 2 Value</label><input id="s_stat2val" placeholder="925"></div>
+              <div class="field"><label>Stat 2 Label</label><input id="s_stat2lbl" placeholder="Sterling Silver"></div>
+            </div>
+            <div class="form-row">
+              <div class="field"><label>Stat 3 Value</label><input id="s_stat3val" placeholder="500+"></div>
+              <div class="field"><label>Stat 3 Label</label><input id="s_stat3lbl" placeholder="Products"></div>
+            </div>
+            <div class="form-row">
+              <div class="field"><label>Stat 4 Value</label><input id="s_stat4val" placeholder="50+"></div>
+              <div class="field"><label>Stat 4 Label</label><input id="s_stat4lbl" placeholder="Countries"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">Change Password</div>
+            <div class="field"><label>Current Password</label><input type="password" id="s_curPass"></div>
+            <div class="field"><label>New Password</label><input type="password" id="s_newPass"></div>
+            <div class="field"><label>Confirm New Password</label><input type="password" id="s_confPass"></div>
+            <button class="btn" id="changePassBtn">Update Password</button>
+            <div class="notice" id="passNotice" style="margin-top:12px"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">Data Management</div>
+            <p style="font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:16px">Export or import a full backup of all site data — products, content, FAQ, and settings.</p>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <button class="sbtn success" id="exportAllBtn">Export Full Backup</button>
+              <button class="sbtn" id="exportBtn">Export Catalog Only</button>
+              <hr class="section-divider">
+              <button class="sbtn" id="importAllBtn">Import Full Backup</button>
+              <button class="sbtn" id="importBtn">Import Catalog Only</button>
+              <input type="file" id="importAllFile" accept="application/json" hidden>
+              <input type="file" id="importFile" accept="application/json" hidden>
+              <hr class="section-divider">
+              <button class="sbtn" id="resetBtn">Reset Catalog to Defaults</button>
+              <button class="sbtn danger" id="nukeBtn">Clear All Saved Data</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main-area -->
+</div><!-- /adminPanel -->
+
+<script>
+// ── AUTH ──────────────────────────────────────────────────
+const AUTH_KEY='cspAdminAuth', PASS_KEY='cspAdminPass';
+const DEFAULT_USER='nwi_admin', DEFAULT_PASS='NWI@Secure2025!';
+function getAdminPass(){return localStorage.getItem(PASS_KEY)||DEFAULT_PASS;}
+function checkAuth(){return sessionStorage.getItem(AUTH_KEY)==='yes';}
+function showPanel(){el('loginPage').style.display='none';el('adminPanel').classList.add('open');}
+function showLogin(){el('loginPage').style.display='';el('adminPanel').classList.remove('open');}
+if(checkAuth()){showPanel();init();}
+el('loginBtn').onclick=()=>{
+  const u=el('loginUser').value.trim(),p=el('loginPass').value;
+  if(u===DEFAULT_USER&&p===getAdminPass()){sessionStorage.setItem(AUTH_KEY,'yes');el('loginErr').classList.remove('show');showPanel();init();}
+  else{el('loginErr').classList.add('show');el('loginPass').value='';el('loginPass').focus();}
+};
+el('loginPass').addEventListener('keydown',e=>{if(e.key==='Enter')el('loginBtn').click();});
+el('loginUser').addEventListener('keydown',e=>{if(e.key==='Enter')el('loginPass').focus();});
+el('logoutBtn').onclick=()=>{sessionStorage.removeItem(AUTH_KEY);showLogin();};
+
+// ── UTILS ─────────────────────────────────────────────────
+function el(id){return document.getElementById(id);}
+function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function notice(id,msg,isErr=false){const n=el(id);n.textContent=msg;n.className='notice show '+(isErr?'err':'ok');setTimeout(()=>n.classList.remove('show'),2800);}
+function loadStore(key,def){try{return JSON.parse(localStorage.getItem(key))||def;}catch{return def;}}
+function saveStore(key,data){localStorage.setItem(key,JSON.stringify(data));}
+
+// ── KEYS & DEFAULTS ───────────────────────────────────────
+const STORE_KEY='classicSilverPlaceCatalogV2',CONTENT_KEY='cspSiteContent',CONTACT_KEY='cspContactData',SETTINGS_KEY='cspSiteSettings',FAQ_KEY='cspFaqData',APPEARANCE_KEY='cspAppearance';
+
+const DEFAULT_PRODUCTS=[{"id":"CSAR607","code":"CSAR607","name":"Adjustable Open Ring","category":"Rings","metal":"Sterling Silver","stone":"Round CZ","style":"Adjustable","occasion":"Gift, Casual","desc":"An open-band design with a sparkling stone centrepiece. The adjustable band ensures a comfortable fit for most finger sizes, making it a versatile gifting option.","image":"assets/Products/Rings/CSAR607.JPG"},{"id":"CSR107","code":"CSR107","name":"Classic Solitaire Ring","category":"Rings","metal":"Sterling Silver","stone":"Cubic Zirconia","style":"Solitaire","occasion":"Casual, Formal","desc":"A timeless solitaire design featuring a brilliant round-cut cubic zirconia set in sterling silver. Perfect for everyday elegance or as a statement piece.","image":"assets/Products/Rings/CSR107.JPG"},{"id":"CSR108","code":"CSR108","name":"Twisted Band Ring","category":"Rings","metal":"Sterling Silver","stone":"White Zirconia","style":"Contemporary","occasion":"Casual, Gift","desc":"An elegant twisted band ring with sparkling white zirconia accents.","image":"assets/Products/Rings/CSR108.JPG"},{"id":"CSR154","code":"CSR154","name":"Floral Cluster Ring","category":"Rings","metal":"Sterling Silver","stone":"Multi-stone CZ","style":"Floral","occasion":"Party, Wedding","desc":"A beautiful floral cluster design with multiple brilliant-cut stones arranged in a bloom pattern.","image":"assets/Products/Rings/CSR154.JPG"},{"id":"CSR482","code":"CSR482","name":"Ring CSR482","category":"Rings","metal":"Sterling Silver","stone":"Cubic Zirconia","style":"Classic","occasion":"Everyday, Gift","desc":"A finely crafted sterling silver ring from Classic Silver Place, made for lasting shine and everyday elegance.","image":"assets/Products/Rings/CSR482.JPG"}];
+const DEFAULT_CONTENT={eyebrow:"Established 1970 - Jaipur, India",heroTitle:"Classic Silver Place Jewellery Catalog",heroDesc:"Established in 1970, Classic Silver Palace has carved a niche for itself in the market as a leading wholesale manufacturer and exporter of all type Silver Articles, Silver with stone Studded Jewellery, Gem Color Stone Jewellery, Silver Oxidized Jewellery, High Fashion Jewellery etc.",intro:"Established in 1970, Classic Silver Palace has carved a niche for itself in the market as a leading wholesale manufacturer and exporter of all type Silver Articles, Silver with stone Studded Jewellery, Gem Color Stone Jewellery, Silver Oxidized Jewellery, High Fashion Jewellery etc. We are located in Jaipur (Rajasthan), India.\n\nOur success is based upon our early principles which are still held today — innovative design, exquisite craftsmanship, impeccable quality and real value for money. The traditional skills of jewellery making, handed down over decades, are still in use in our state of the art workshops.\n\nOur spectacular range of Indian Silver Articles & Semi Precious Sterling Silver Jewellery is the result of a proper insight into the functional aspect of this industry. We are a member of the Export Promotion Council For Handicraft (EPCH).",ourProducts:"Where elegance is an attitude and innovation is the buzzword, we at Classic Silver Jewellery are committed to excellence by providing a nonpareil collection of Sterling Silver Jewellery & Silver Articles. Our collection includes:\n- Gem Stone Jewelry\n- 925 Silver With Studded Jewellery\n- Beaded Jewellery\n- Sterling Silver Jewellery\n- Silver Articles\n\nFor any query, please send us an email: info@indianclassicsilverjewellery.com",infra:"Owing to our well-established infrastructural setup, outfitted with latest machinery and advanced technology, we are actively engaged in offering a vast array of premium quality Silver Jewelries with certified gemstones.\n\nWe employ a state-of-the-art infrastructure facility equipped with the latest machines to design and manufacture our products, segregated into manufacturing, designing, sales & marketing, administration and logistics.\n\nWhat makes our infrastructure stand apart:\n- Well-equipped quality control\n- Professional administrative setup\n- Standardized processes\n- Latest machinery & advanced technology",why:"We are a reckoned entity engaged in manufacturing, exporting and supplying a vast collection of intricately designed Certified Gemstones and Sterling Silver Jewellery.\n\nFactors behind our success:\n- Unique and exclusive designs\n- Flawless quality and fine finish\n- Wide choice in terms of design and jewellery types\n- Capacious warehousing and suitable packaging\n- Fast order processing and timely delivery\n- Integrated designing and manufacturing facilities\n- Certified Gems & Diamonds",address:"Classic Silver Palace\nV-2, Opp. Aashiyana Guest House, Chameli Wala Market, M.I. Road,\nJaipur 302003, Rajasthan, India\nTel: 0091-141-2360070 | Mobile: 0091-94140-72173"};
+const DEFAULT_CONTACT={paypalEmail:"info@indianclassicsilverjewellery.com",paypalNote:"Instant Payment by PAYPAL (For all customers other than India)",usdBank:"JP MORGAN CHASE BANK",usdSwift:"HASUS33XXX",usdAcc:"001-1-407376",usdRouting:"021000021",usdBeneBank:"AXIS Bank Ltd",usdBeneAcc:"010010200019196",gbpBank:"Chase Manhattan Bank",gbpSwift:"CHASGB2LXXX",gbpSort:"60-92-42",gbpAcc:"00111 31588",gbpBeneAcc:"010010200019196",eurBank:"JPMorgan Chase Bank Frankfurt",eurSwift:"CHASDEFXXXX",eurIban:"DE81501108006231605392",eurBeneAcc:"010010200019196",companyName:"Classic Silver Palace",addr1:"V-2, Opp. Aashiyana Guest House, Chameli Wala Market",addr2:"M.I. Road",city:"Jaipur 302003, Rajasthan, India",phone:"0091-141-2360070",mobile:"0091-94140-72173",email:"info@indianclassicsilverjewellery.com",ownerEmail:"info@indianclassicsilverjewellery.com",replyLabel:"Classic Silver Place",minOrder:"No minimum order amount or minimum order quantity."};
+const DEFAULT_SETTINGS={siteTitle:"Classic Silver Place",tagline:"Manufacturer & Exporter",footerDesc:"Classic Silver Palace\nManufacturer & Exporter of Sterling Silver Jewellery & Silver Articles\nV-2, Opp. Aashiyana Guest House, Chameli Wala Market, M.I. Road,\nJaipur [302003], (Raj.) India",stat1val:"1970",stat1lbl:"Established",stat2val:"925",stat2lbl:"Sterling Silver",stat3val:"500+",stat3lbl:"Products",stat4val:"50+",stat4lbl:"Countries"};
+const DEFAULT_FAQ=[{id:"f1",q:"Do your prices include shipping?",a:"No, all prices mentioned on this website exclude shipping charges. Shipping costs are calculated based on your location and preferred shipping method."},{id:"f2",q:"Where do you ship from?",a:"We are based in Jaipur, Rajasthan, India. All items are shipped directly from Jaipur through reputed international Freight Forwarders."},{id:"f3",q:"How do you ship?",a:"We use various shipping options as per your needs — including FedEx, UPS, and Post Parcel Service (Express Mail Service)."},{id:"f4",q:"How long does it take for delivery?",a:"We normally take 1–2 weeks (working days only) to dispatch the shipment after order confirmation."},{id:"f5",q:"What is your Minimum Order Amount?",a:"There is NO minimum order amount and NO minimum order quantity. We welcome orders of all sizes."},{id:"f6",q:"What stone types do you use?",a:"We use Precious and Semi-Precious stones in our jewelry. All stones are original and of the best quality available — no inclusions."},{id:"f7",q:"What are your shipping charges?",a:"Shipping charges depend on the shipping method and company involved. Please contact us for a quote based on your destination and order size."},{id:"f8",q:"Are there additional charges beyond the purchase price?",a:"As items are shipped internationally, you may be charged a Customs Duty by your government. Customs rules and rates vary by country — please check local regulations."},{id:"f9",q:"Can I return or exchange items?",a:"Please contact us at info@indianclassicsilverjewellery.com for any return or exchange queries. We strive to ensure complete customer satisfaction."},{id:"f10",q:"How do I place a bulk or wholesale order?",a:"Use our Contact page to send an enquiry or email us directly. We cater to wholesale buyers and exporters worldwide with competitive pricing."},{id:"f11",q:"Are you a member of any trade body?",a:"Yes, we are a member of the Export Promotion Council For Handicraft (EPCH), India."},{id:"f12",q:"Note on Jurisdiction",a:"In case of any dispute, the place of jurisdiction will be Jaipur, India."}];
+const DEFAULT_APPEARANCE={displayFont:"'Playfair Display', Georgia, serif",displayWeight:"400",bodyFont:"Inter, system-ui, sans-serif",baseFontSize:"15",lineHeight:"1.65",accentColor:"#9b7230",bgStyle:"warm-cream",radius:"4px",btnStyle:"subtle"};
+
+let products=loadStore(STORE_KEY,DEFAULT_PRODUCTS);
+let faqItems=loadStore(FAQ_KEY,DEFAULT_FAQ);
+let editProductId=null,pendingImages=[],editFaqId=null;
+
+// ── NAVIGATION ────────────────────────────────────────────
+const TAB_LABELS={'products':'Products','content':'Site Content','faq':'FAQ','contact':'Contact & Payment','appearance':'Appearance','settings':'Settings'};
+document.querySelectorAll('.nav-item[data-tab]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-body').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    el('tab-'+btn.dataset.tab).classList.add('active');
+    el('topbar-label').textContent=TAB_LABELS[btn.dataset.tab]||btn.dataset.tab;
+  });
+});
+
+// ── INIT ──────────────────────────────────────────────────
+function init(){renderAdminList();loadContentForm();loadContactForm();loadSettingsForm();renderFaqList();loadAppearanceForm();}
+
+// ── PRODUCTS ──────────────────────────────────────────────
+function renderAdminList(){
+  const q=(el('adminSearch')?.value||'').trim().toLowerCase();
+  const list=q?products.filter(p=>[p.code,p.name,p.category,p.stone].join(' ').toLowerCase().includes(q)):products;
+  el('prodCount').textContent=products.length;
+  el('adminList').innerHTML=list.map(p=>`<div class="admin-row"><img src="${esc((p.images&&p.images[0])||p.image)}" alt="" onerror="this.style.background='var(--soft)'"><div><strong>${esc(p.code)} — ${esc(p.name)}</strong><span>${esc(p.category)} · ${esc(p.stone)} · ${esc(p.style)}</span></div><div class="row-btns"><button class="sbtn" data-edit="${esc(p.id)}">Edit</button><button class="sbtn danger" data-del="${esc(p.id)}">Delete</button></div></div>`).join('')||'<p style="color:var(--muted);font-size:13px;padding:8px 0">No products found.</p>';
+}
+function renderGallery(){
+  const box=el('imageGallery');
+  if(!pendingImages.length){box.innerHTML='<span id="galleryPh" style="font-size:12px;color:var(--subtle);margin:auto">No images yet</span>';return;}
+  box.innerHTML=pendingImages.map((src,i)=>`<div style="position:relative;flex-shrink:0;width:100px;text-align:center">
+    <div style="width:96px;height:96px;border:2px solid ${i===0?'#a77a35':'var(--border)'};border-radius:6px;overflow:hidden;background:white">
+      <img src="${src}" style="width:100%;height:100%;object-fit:contain;padding:3px">
+    </div>
+    ${i===0
+      ? '<div style="margin-top:4px;font-size:10px;font-weight:800;color:#a77a35;letter-spacing:.05em">✔ Main Image</div>'
+      : `<button type="button" onclick="setMain(${i})" style="margin-top:4px;width:100%;padding:3px 0;font-size:10px;font-weight:700;border:1px solid #a77a35;border-radius:4px;background:#fff8ee;color:#a77a35;cursor:pointer">Set as Main</button>`
+    }
+    <button type="button" onclick="removeImg(${i})" style="margin-top:3px;width:100%;padding:2px 0;font-size:10px;border:1px solid #f5cccc;border-radius:4px;background:#fff5f5;color:#c0392b;cursor:pointer">Remove</button>
+  </div>`).join('');
+}
+function setMain(i){if(i===0)return;const img=pendingImages.splice(i,1)[0];pendingImages.unshift(img);renderGallery();}
+function moveImg(i,d){const j=i+d;if(j<0||j>=pendingImages.length)return;[pendingImages[i],pendingImages[j]]=[pendingImages[j],pendingImages[i]];renderGallery();}
+function removeImg(i){pendingImages.splice(i,1);renderGallery();}
+function blankProduct(){
+  editProductId=null;pendingImages=[];
+  el('formTitle').textContent='New Product';
+  ['codeInput','nameInput','metalInput','stoneInput','styleInput','occasionInput','descInput'].forEach(id=>el(id).value='');
+  el('categoryInput').value='Rings';
+  el('imageFile').value='';
+  renderGallery();
+}
+function fillProductForm(id){
+  const p=products.find(x=>x.id===id);if(!p)return;
+  editProductId=id;
+  pendingImages=p.images&&p.images.length?[...p.images]:(p.image?[p.image]:[]);
+  el('formTitle').textContent='Edit — '+p.code;
+  el('codeInput').value=p.code;el('nameInput').value=p.name;el('categoryInput').value=p.category;
+  el('metalInput').value=p.metal;el('stoneInput').value=p.stone;el('styleInput').value=p.style;
+  el('occasionInput').value=p.occasion;el('descInput').value=p.desc;
+  el('imageFile').value='';
+  renderGallery();
+  document.querySelector('[data-tab="products"]').click();window.scrollTo({top:0,behavior:'smooth'});
+}
+function saveProduct(){
+  const code=el('codeInput').value.trim(),name=el('nameInput').value.trim();
+  if(!code||!name){notice('prodNotice','SKU and name are required.',true);return;}
+  const imgs=pendingImages.length?pendingImages:['assets/classic-silver-place-logo.jpeg'];
+  const item={id:editProductId||code+'-'+Date.now(),code,name,category:el('categoryInput').value,metal:el('metalInput').value.trim()||'Sterling Silver',stone:el('stoneInput').value.trim()||'Cubic Zirconia',style:el('styleInput').value.trim()||'Classic',occasion:el('occasionInput').value.trim()||'Everyday, Gift',desc:el('descInput').value.trim()||'Classic Silver Palace sterling silver jewellery.',images:imgs,image:imgs[0]};
+  if(editProductId){products=products.map(p=>p.id===editProductId?item:p);}
+  else{products.unshift(item);}
+  saveStore(STORE_KEY,products);renderAdminList();
+  if(editProductId){fillProductForm(editProductId);notice('prodNotice','Product updated successfully.');}
+  else{blankProduct();notice('prodNotice','Product added successfully.');}
+}
+
+document.addEventListener('click',e=>{
+  const ed=e.target.closest('[data-edit]');if(ed){fillProductForm(ed.dataset.edit);return;}
+  const del=e.target.closest('[data-del]');if(del&&confirm('Delete this product?')){products=products.filter(p=>p.id!==del.dataset.del);saveStore(STORE_KEY,products);renderAdminList();blankProduct();return;}
+  const fe=e.target.closest('[data-fedit]');if(fe){fillFaqForm(fe.dataset.fedit);return;}
+  const fd=e.target.closest('[data-fdel]');if(fd&&confirm('Delete this FAQ item?')){faqItems=faqItems.filter(f=>f.id!==fd.dataset.fdel);saveStore(FAQ_KEY,faqItems);renderFaqList();blankFaq();return;}
+  const fu=e.target.closest('[data-fup]');if(fu){const i=faqItems.findIndex(f=>f.id===fu.dataset.fup);if(i>0){[faqItems[i-1],faqItems[i]]=[faqItems[i],faqItems[i-1]];saveStore(FAQ_KEY,faqItems);renderFaqList();}return;}
+  const fw=e.target.closest('[data-fdown]');if(fw){const i=faqItems.findIndex(f=>f.id===fw.dataset.fdown);if(i<faqItems.length-1){[faqItems[i],faqItems[i+1]]=[faqItems[i+1],faqItems[i]];saveStore(FAQ_KEY,faqItems);renderFaqList();}return;}
+});
+
+el('adminSearch').addEventListener('input',renderAdminList);
+el('saveBtn').onclick=saveProduct;
+el('newBtn').onclick=blankProduct;
+el('imageFile').addEventListener('change',e=>{Array.from(e.target.files).forEach(file=>{const r=new FileReader();r.onload=()=>{pendingImages.push(r.result);renderGallery();};r.readAsDataURL(file);});e.target.value='';});
+
+// ── CONTENT ───────────────────────────────────────────────
+function loadContentForm(){const d=loadStore(CONTENT_KEY,DEFAULT_CONTENT);Object.keys(DEFAULT_CONTENT).forEach(k=>{const inp=el('c_'+k);if(inp)inp.value=d[k]||DEFAULT_CONTENT[k]||'';});}
+el('saveContentBtn').onclick=()=>{const data={};Object.keys(DEFAULT_CONTENT).forEach(k=>{const inp=el('c_'+k);if(inp)data[k]=inp.value.trim();});saveStore(CONTENT_KEY,data);notice('contentNotice','Content saved.');};
+
+// ── FAQ ───────────────────────────────────────────────────
+function renderFaqList(){el('faqCount').textContent=faqItems.length;el('faqList').innerHTML=faqItems.map((f,i)=>`<div class="faq-item"><strong>${i+1}. ${esc(f.q)}</strong><p>${esc(f.a)}</p><div class="faq-item-actions"><button class="sbtn" data-fedit="${esc(f.id)}">Edit</button><button class="sbtn danger" data-fdel="${esc(f.id)}">Delete</button>${i>0?`<button class="sbtn" data-fup="${esc(f.id)}">Move Up</button>`:''} ${i<faqItems.length-1?`<button class="sbtn" data-fdown="${esc(f.id)}">Move Down</button>`:''}</div></div>`).join('')||'<p style="color:var(--muted);font-size:13px">No FAQ items yet.</p>';}
+function blankFaq(){editFaqId=null;el('faqFormTitle').textContent='New FAQ Item';el('faqQ').value='';el('faqA').value='';}
+function fillFaqForm(id){const f=faqItems.find(x=>x.id===id);if(!f)return;editFaqId=id;el('faqFormTitle').textContent='Edit FAQ';el('faqQ').value=f.q;el('faqA').value=f.a;document.querySelector('[data-tab="faq"]').click();window.scrollTo({top:0,behavior:'smooth'});}
+el('saveFaqBtn').onclick=()=>{const q=el('faqQ').value.trim(),a=el('faqA').value.trim();if(!q||!a){notice('faqNotice','Both question and answer are required.',true);return;}const item={id:editFaqId||'f'+Date.now(),q,a};if(editFaqId){faqItems=faqItems.map(f=>f.id===editFaqId?item:f);}else{faqItems.push(item);editFaqId=item.id;}saveStore(FAQ_KEY,faqItems);renderFaqList();fillFaqForm(item.id);notice('faqNotice','FAQ item saved.');};
+el('newFaqBtn').onclick=blankFaq;
+
+// ── CONTACT ───────────────────────────────────────────────
+function loadContactForm(){const d=loadStore(CONTACT_KEY,DEFAULT_CONTACT);Object.keys(DEFAULT_CONTACT).forEach(k=>{const inp=el('p_'+k);if(inp)inp.value=d[k]||DEFAULT_CONTACT[k]||'';});}
+el('saveContactBtn').onclick=()=>{const data={};Object.keys(DEFAULT_CONTACT).forEach(k=>{const inp=el('p_'+k);if(inp)data[k]=inp.value.trim();});saveStore(CONTACT_KEY,data);notice('contactNotice','Contact info saved.');};
+
+// ── SETTINGS ──────────────────────────────────────────────
+function loadSettingsForm(){const d=loadStore(SETTINGS_KEY,DEFAULT_SETTINGS);Object.keys(DEFAULT_SETTINGS).forEach(k=>{const inp=el('s_'+k);if(inp)inp.value=d[k]||DEFAULT_SETTINGS[k]||'';});}
+el('saveSettingsBtn').onclick=()=>{const data={};Object.keys(DEFAULT_SETTINGS).forEach(k=>{const inp=el('s_'+k);if(inp)data[k]=inp.value.trim();});saveStore(SETTINGS_KEY,data);notice('settingsNotice','Settings saved.');};
+
+// PASSWORD
+el('changePassBtn').onclick=()=>{
+  const cur=el('s_curPass').value,nw=el('s_newPass').value,conf=el('s_confPass').value;
+  if(cur!==getAdminPass()){notice('passNotice','Current password is incorrect.',true);return;}
+  if(nw.length<6){notice('passNotice','Password must be at least 6 characters.',true);return;}
+  if(nw!==conf){notice('passNotice','Passwords do not match.',true);return;}
+  localStorage.setItem(PASS_KEY,nw);
+  el('s_curPass').value='';el('s_newPass').value='';el('s_confPass').value='';
+  notice('passNotice','Password updated successfully.');
+};
+
+// BACKUP
+el('exportAllBtn').onclick=()=>{const backup={products:loadStore(STORE_KEY,DEFAULT_PRODUCTS),content:loadStore(CONTENT_KEY,DEFAULT_CONTENT),contact:loadStore(CONTACT_KEY,DEFAULT_CONTACT),settings:loadStore(SETTINGS_KEY,DEFAULT_SETTINGS),faq:loadStore(FAQ_KEY,DEFAULT_FAQ),exported:new Date().toISOString()};const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='csp-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(a.href);};
+el('exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify(products,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='classic-silver-catalog.json';a.click();URL.revokeObjectURL(a.href);};
+el('importBtn').onclick=()=>el('importFile').click();
+el('importAllBtn').onclick=()=>el('importAllFile').click();
+el('importFile').addEventListener('change',e=>{const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{try{const data=JSON.parse(r.result);if(!Array.isArray(data))throw new Error('Expected array');products=data;saveStore(STORE_KEY,products);renderAdminList();blankProduct();notice('settingsNotice','Imported '+data.length+' products.');}catch(err){alert('Import failed: '+err.message);}};r.readAsText(file);});
+el('importAllFile').addEventListener('change',e=>{const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(d.products){products=d.products;saveStore(STORE_KEY,products);}if(d.content)saveStore(CONTENT_KEY,d.content);if(d.contact)saveStore(CONTACT_KEY,d.contact);if(d.settings)saveStore(SETTINGS_KEY,d.settings);if(d.faq){faqItems=d.faq;saveStore(FAQ_KEY,faqItems);}renderAdminList();renderFaqList();loadContentForm();loadContactForm();loadSettingsForm();notice('settingsNotice','Backup imported successfully.');}catch(err){alert('Import failed: '+err.message);}};r.readAsText(file);});
+el('resetBtn').onclick=()=>{if(confirm('Reset catalog to default products?')){products=DEFAULT_PRODUCTS.slice();localStorage.removeItem(STORE_KEY);renderAdminList();blankProduct();notice('settingsNotice','Catalog reset to defaults.');}};
+el('nukeBtn').onclick=()=>{if(confirm('This will permanently clear ALL saved data. Continue?')){[STORE_KEY,CONTENT_KEY,CONTACT_KEY,SETTINGS_KEY,FAQ_KEY].forEach(k=>localStorage.removeItem(k));products=DEFAULT_PRODUCTS.slice();faqItems=DEFAULT_FAQ.slice();renderAdminList();renderFaqList();loadContentForm();loadContactForm();loadSettingsForm();notice('settingsNotice','All data cleared and reset.');}};
+
+// ── APPEARANCE ────────────────────────────────────────────
+function loadAppearanceForm(){
+  const d=loadStore(APPEARANCE_KEY,DEFAULT_APPEARANCE);
+  el('a_displayFont').value=d.displayFont||DEFAULT_APPEARANCE.displayFont;
+  el('a_displayWeight').value=d.displayWeight||DEFAULT_APPEARANCE.displayWeight;
+  el('a_bodyFont').value=d.bodyFont||DEFAULT_APPEARANCE.bodyFont;
+  el('a_baseFontSize').value=d.baseFontSize||DEFAULT_APPEARANCE.baseFontSize;
+  el('a_fontSizeLabel').textContent=(d.baseFontSize||DEFAULT_APPEARANCE.baseFontSize)+'px';
+  el('a_lineHeight').value=d.lineHeight||DEFAULT_APPEARANCE.lineHeight;
+  el('a_accentColor').value=d.accentColor||DEFAULT_APPEARANCE.accentColor;
+  el('a_accentHex').value=d.accentColor||DEFAULT_APPEARANCE.accentColor;
+  el('a_bgStyle').value=d.bgStyle||DEFAULT_APPEARANCE.bgStyle;
+  el('a_radius').value=d.radius||DEFAULT_APPEARANCE.radius;
+  el('a_btnStyle').value=d.btnStyle||DEFAULT_APPEARANCE.btnStyle;
+  updateSwatchSelection(d.accentColor||DEFAULT_APPEARANCE.accentColor);
+  updatePreview();
+}
+function updatePreview(){
+  const font=el('a_displayFont').value;
+  const weight=el('a_displayWeight').value;
+  const bodyFont=el('a_bodyFont').value;
+  const size=el('a_baseFontSize').value;
+  const lh=el('a_lineHeight').value;
+  const accent=el('a_accentColor').value;
+  el('previewTitle').style.fontFamily=font;
+  el('previewTitle').style.fontWeight=weight;
+  el('previewBody').style.fontFamily=bodyFont;
+  el('previewBody').style.fontSize=size+'px';
+  el('previewBody').style.lineHeight=lh;
+  el('previewBtn').style.background=accent;
+}
+function updateSwatchSelection(color){
+  document.querySelectorAll('.swatch').forEach(s=>{
+    s.classList.toggle('selected',s.dataset.color===color);
+  });
+}
+el('a_displayFont').addEventListener('change',updatePreview);
+el('a_displayWeight').addEventListener('change',updatePreview);
+el('a_bodyFont').addEventListener('change',updatePreview);
+el('a_baseFontSize').addEventListener('input',()=>{
+  el('a_fontSizeLabel').textContent=el('a_baseFontSize').value+'px';updatePreview();
+});
+el('a_lineHeight').addEventListener('change',updatePreview);
+el('a_accentColor').addEventListener('input',e=>{
+  el('a_accentHex').value=e.target.value;updateSwatchSelection(e.target.value);updatePreview();
+});
+el('a_accentHex').addEventListener('change',e=>{
+  const v=e.target.value.trim();
+  if(/^#[0-9a-fA-F]{6}$/.test(v)){el('a_accentColor').value=v;updateSwatchSelection(v);updatePreview();}
+});
+document.querySelectorAll('.swatch').forEach(s=>{
+  s.addEventListener('click',()=>{
+    const c=s.dataset.color;
+    el('a_accentColor').value=c;el('a_accentHex').value=c;
+    updateSwatchSelection(c);updatePreview();
+  });
+});
+el('saveAppearanceBtn').onclick=()=>{
+  const data={
+    displayFont:el('a_displayFont').value,
+    displayWeight:el('a_displayWeight').value,
+    bodyFont:el('a_bodyFont').value,
+    baseFontSize:el('a_baseFontSize').value,
+    lineHeight:el('a_lineHeight').value,
+    accentColor:el('a_accentColor').value,
+    bgStyle:el('a_bgStyle').value,
+    radius:el('a_radius').value,
+    btnStyle:el('a_btnStyle').value
+  };
+  saveStore(APPEARANCE_KEY,data);
+  notice('appearanceNotice','Appearance settings saved.');
+};
+el('exportCssBtn').onclick=()=>{
+  const d=loadStore(APPEARANCE_KEY,DEFAULT_APPEARANCE);
+  const bgMap={'warm-cream':'#fdfcf9','pure-white':'#ffffff','cool-gray':'#f8f9fa','warm-gray':'#f7f5f2','parchment':'#f4ede0'};
+  const btnMap={'sharp':'0px','subtle':'4px','pill':'999px'};
+  const css=`:root {\n  --display-font: ${d.displayFont};\n  --display-weight: ${d.displayWeight};\n  --body-font: ${d.bodyFont};\n  --base-font-size: ${d.baseFontSize}px;\n  --line-height: ${d.lineHeight};\n  --accent: ${d.accentColor};\n  --page-bg: ${bgMap[d.bgStyle]||'#fdfcf9'};\n  --radius: ${d.radius};\n  --btn-radius: ${btnMap[d.btnStyle]||'4px'};\n}\n`;
+  const blob=new Blob([css],{type:'text/css'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='csp-appearance.css';a.click();URL.revokeObjectURL(a.href);
+};
+</script>
+</body>
+</html>
